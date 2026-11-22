@@ -2,6 +2,7 @@ import asyncio
 import time
 import aiosqlite
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from aiogram import Bot, Dispatcher
@@ -18,6 +19,14 @@ DB_PATH = "mgh_light.db"
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 app = FastAPI()
+
+# Разрешаем запросы с сайта (GitHub Pages и любых источников)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 user_cooldowns: dict[int, float] = {}
 
