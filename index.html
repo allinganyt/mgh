@@ -1,514 +1,533 @@
-[{"type":"text","text":"successfully downloaded text file (SHA: a7badc6d09b514bf2d7e005635186c35f0569b16)"},{"type":"resource","resource":{"uri":"repo://allinganyt/mgh/sha/7f729b4321ad08bca4a74f1f5d8cf3abf84d2e4c/contents/index.html","mimeType":"text/html; charset=utf-8","text":"<!DOCTYPE html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />\n  <title>Miami General Hospital (MGH)</title>\n  <script src=\"https://telegram.org/js/telegram-web-app.js\"></script>\n  <style>\n    :root {\n      --bg-top: #eef4ff;\n      --bg-mid: #e6e8ff;\n      --bg-bot: #f3eaff;\n      --glass: rgba(255, 255, 255, 0.62);\n      --glass-strong: rgba(255, 255, 255, 0.82);\n      --glass-border: rgba(255, 255, 255, 0.88);\n      --glass-shadow: 0 10px 28px rgba(86, 108, 196, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);\n      --text: #18203a;\n      --muted: #5c688c;\n      --blue: #2f7df6;\n      --purple: #7c5cff;\n      --grad: linear-gradient(135deg, #3b82f6 0%, #7c5cff 100%);\n      --grad-soft: linear-gradient(135deg, rgba(59, 130, 246, 0.14), rgba(124, 92, 255, 0.14));\n      --ok-bg: rgba(16, 185, 129, 0.14);\n      --ok-txt: #047857;\n      --warn-bg: rgba(245, 158, 11, 0.16);\n      --warn-txt: #b45309;\n      --err-bg: rgba(239, 68, 68, 0.14);\n      --err-txt: #b91c1c;\n    }\n\n    * {\n      box-sizing: border-box;\n      -webkit-tap-highlight-color: transparent;\n    }\n\n    html, body {\n      margin: 0;\n      padding: 0;\n      min-height: 100%;\n      font-family: -apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"Segoe UI\", Roboto, sans-serif;\n      color: var(--text);\n      background:\n        radial-gradient(circle at 12% 10%, rgba(96, 165, 250, 0.36), transparent 45%),\n        radial-gradient(circle at 88% 14%, rgba(167, 139, 250, 0.36), transparent 45%),\n        radial-gradient(circle at 50% 92%, rgba(125, 211, 252, 0.32), transparent 50%),\n        linear-gradient(160deg, var(--bg-top) 0%, var(--bg-mid) 52%, var(--bg-bot) 100%);\n      background-attachment: fixed;\n    }\n\n    .app {\n      max-width: 540px;\n      margin: 0 auto;\n      padding: 14px 14px 96px;\n    }\n\n    .glass {\n      background: var(--glass);\n      backdrop-filter: blur(12px);\n      -webkit-backdrop-filter: blur(12px);\n      border: 1px solid var(--glass-border);\n      box-shadow: var(--glass-shadow);\n      border-radius: 22px;\n    }\n\n    .topbar {\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      gap: 10px;\n      padding: 12px 14px;\n      margin-bottom: 12px;\n    }\n\n    .brand {\n      display: flex;\n      align-items: center;\n      gap: 11px;\n      min-width: 0;\n    }\n\n    .logo {\n      width: 42px;\n      height: 42px;\n      border-radius: 14px;\n      background: var(--grad);\n      color: #fff;\n      display: grid;\n      place-items: center;\n      font-weight: 800;\n      font-size: 14px;\n      letter-spacing: 0.4px;\n      flex-shrink: 0;\n      box-shadow: 0 6px 16px rgba(92, 108, 235, 0.3);\n    }\n\n    .brand-title {\n      font-size: 15px;\n      font-weight: 700;\n      line-height: 1.2;\n      white-space: nowrap;\n      overflow: hidden;\n      text-overflow: ellipsis;\n    }\n\n    .brand-sub {\n      font-size: 12px;\n      color: var(--muted);\n      margin-top: 2px;\n    }\n\n    .role-btn {\n      border: 1px solid rgba(124, 92, 255, 0.28);\n      background: var(--glass-strong);\n      color: var(--text);\n      padding: 8px 12px;\n      border-radius: 999px;\n      font-size: 12px;\n      font-weight: 700;\n      cursor: pointer;\n      flex-shrink: 0;\n      transition: transform 0.12s ease, background 0.15s ease;\n    }\n\n    .role-btn:active {\n      transform: scale(0.96);\n    }\n\n    .role-btn.admin-on {\n      background: var(--grad);\n      color: #fff;\n      border-color: transparent;\n    }\n\n    .tabs {\n      display: grid;\n      grid-template-columns: repeat(3, 1fr);\n      gap: 6px;\n      padding: 5px;\n      margin-bottom: 14px;\n    }\n\n    .tabs.has-admin {\n      grid-template-columns: repeat(4, 1fr);\n    }\n\n    .tab-btn {\n      border: none;\n      background: transparent;\n      color: var(--muted);\n      font-weight: 600;\n      font-size: 12.5px;\n      padding: 9px 6px;\n      border-radius: 16px;\n      cursor: pointer;\n      transition: all 0.15s ease;\n    }\n\n    .tab-btn.active {\n      background: var(--glass-strong);\n      color: var(--text);\n      font-weight: 700;\n      box-shadow: 0 4px 12px rgba(79, 99, 194, 0.12);\n    }\n\n    .section {\n      display: none;\n    }\n\n    .section.active {\n      display: block;\n    }\n\n    .card {\n      padding: 15px;\n      margin-bottom: 12px;\n      contain: content;\n    }\n\n    .card-title {\n      font-size: 15px;\n      font-weight: 700;\n      margin: 0 0 4px;\n    }\n\n    .card-desc {\n      font-size: 12.5px;\n      color: var(--muted);\n      margin: 0 0 12px;\n      line-height: 1.4;\n    }\n\n    .field {\n      margin-bottom: 11px;\n    }\n\n    label {\n      display: block;\n      font-size: 12px;\n      font-weight: 600;\n      color: var(--muted);\n      margin-bottom: 5px;\n    }\n\n    input, select, textarea {\n      width: 100%;\n      padding: 11px 13px;\n      border-radius: 14px;\n      border: 1px solid rgba(110, 128, 210, 0.25);\n      background: rgba(255, 255, 255, 0.78);\n      color: var(--text);\n      font-size: 14px;\n      font-family: inherit;\n      outline: none;\n    }\n\n    input:focus, select:focus, textarea:focus {\n      border-color: var(--purple);\n      background: #fff;\n    }\n\n    textarea {\n      min-height: 72px;\n      resize: vertical;\n    }\n\n    .btn {\n      width: 100%;\n      border: none;\n      border-radius: 15px;\n      padding: 12px 14px;\n      font-size: 14px;\n      font-weight: 700;\n      cursor: pointer;\n      color: #fff;\n      background: var(--grad);\n      box-shadow: 0 8px 20px rgba(92, 108, 235, 0.26);\n      transition: transform 0.12s ease, opacity 0.15s ease;\n    }\n\n    .btn:active:not(:disabled) {\n      transform: scale(0.98);\n    }\n\n    .btn:disabled {\n      opacity: 0.6;\n      cursor: not-allowed;\n    }\n\n    .btn-ghost {\n      background: var(--grad-soft);\n      color: var(--text);\n      box-shadow: none;\n      border: 1px solid rgba(124, 92, 255, 0.2);\n      padding: 8px 11px;\n      font-size: 12px;\n      width: auto;\n      border-radius: 12px;\n    }\n\n    .btn-danger {\n      background: rgba(239, 68, 68, 0.14);\n      color: var(--err-txt);\n      box-shadow: none;\n      padding: 8px 11px;\n      font-size: 12px;\n      width: auto;\n      border-radius: 12px;\n    }\n\n    .btn-ok {\n      background: rgba(16, 185, 129, 0.16);\n      color: var(--ok-txt);\n      box-shadow: none;\n      padding: 8px 11px;\n      font-size: 12px;\n      width: auto;\n      border-radius: 12px;\n    }\n\n    .doc-item, .log-item, .app-item {\n      padding: 12px;\n      border-radius: 16px;\n      background: rgba(255, 255, 255, 0.56);\n      border: 1px solid rgba(255, 255, 255, 0.8);\n      margin-bottom: 9px;\n      contain: content;\n    }\n\n    .doc-top, .log-top {\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      gap: 8px;\n    }\n\n    .doc-name {\n      font-weight: 700;\n      font-size: 14px;\n    }\n\n    .doc-meta {\n      font-size: 12px;\n      color: var(--muted);\n      margin-top: 3px;\n    }\n\n    .pill {\n      font-size: 11px;\n      font-weight: 700;\n      padding: 4px 9px;\n      border-radius: 999px;\n      white-space: nowrap;\n    }\n\n    .pill.active {\n      background: var(--ok-bg);\n      color: var(--ok-txt);\n    }\n\n    .pill.off {\n      background: var(--err-bg);\n      color: var(--err-txt);\n    }\n\n    .pill.info {\n      background: var(--grad-soft);\n      color: var(--purple);\n    }\n\n    .row-actions {\n      display: flex;\n      gap: 8px;\n      margin-top: 10px;\n      flex-wrap: wrap;\n    }\n\n    .notice {\n      padding: 10px 12px;\n      border-radius: 14px;\n      font-size: 12.5px;\n      margin-top: 10px;\n      line-height: 1.4;\n      display: none;\n    }\n\n    .notice.show {\n      display: block;\n    }\n\n    .notice.ok {\n      background: var(--ok-bg);\n      color: var(--ok-txt);\n    }\n\n    .notice.err {\n      background: var(--err-bg);\n      color: var(--err-txt);\n    }\n\n    .notice.warn {\n      background: var(--warn-bg);\n      color: var(--warn-txt);\n    }\n\n    .modal-backdrop {\n      position: fixed;\n      inset: 0;\n      background: rgba(24, 32, 58, 0.35);\n      backdrop-filter: blur(6px);\n      display: none;\n      align-items: center;\n      justify-content: center;\n      padding: 16px;\n      z-index: 50;\n    }\n\n    .modal-backdrop.open {\n      display: flex;\n    }\n\n    .modal {\n      width: 100%;\n      max-width: 380px;\n      padding: 18px;\n      background: rgba(255, 255, 255, 0.9);\n      border-radius: 22px;\n      border: 1px solid #fff;\n      box-shadow: 0 20px 40px rgba(32, 46, 98, 0.22);\n    }\n\n    .empty {\n      text-align: center;\n      color: var(--muted);\n      font-size: 13px;\n      padding: 16px 8px;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"app\">\n    <div class=\"glass topbar\">\n      <div class=\"brand\">\n        <div class=\"logo\">MGH</div>\n        <div>\n          <div class=\"brand-title\">Miami General Hospital</div>\n          <div class=\"brand-sub\" id=\"modeSubtitle\">MGH • Режим пациента</div>\n        </div>\n      </div>\n      <button class=\"role-btn\" id=\"roleBtn\" onclick=\"onRoleClick()\">Пациент</button>\n    </div>\n\n    <div class=\"glass tabs\" id=\"tabsBar\">\n      <button class=\"tab-btn active\" data-tab=\"book\" onclick=\"switchTab('book')\">Запись</button>\n      <button class=\"tab-btn\" data-tab=\"apply\" onclick=\"switchTab('apply')\">Анкета</button>\n      <button class=\"tab-btn\" data-tab=\"alerts\" onclick=\"switchTab('alerts')\">Уведомления</button>\n      <button class=\"tab-btn\" data-tab=\"admin\" id=\"adminTabBtn\" style=\"display:none;\" onclick=\"switchTab('admin')\">Админ</button>\n    </div>\n\n    <!-- ВКЛАДКА 1: ЗАПИСЬ К ВРАЧУ -->\n    <section class=\"section active\" id=\"tab-book\">\n      <div class=\"glass card\">\n        <h2 class=\"card-title\">Запись на приём в MGH</h2>\n        <p class=\"card-desc\">\n          Укажите ваш <b>@username</b> в Telegram (и запустите бота, чтобы получать напоминания). Кулдаун на 1 аккаунт — <b>15 сек</b>.\n        </p>\n\n        <div class=\"field\">\n          <label for=\"patientUsername\">Ваш @username в Telegram *</label>\n          <input type=\"text\" id=\"patientUsername\" placeholder=\"@username\" autocomplete=\"off\" />\n        </div>\n\n        <div class=\"field\">\n          <label for=\"patientName\">Ваше имя</label>\n          <input type=\"text\" id=\"patientName\" placeholder=\"Например: Алексей\" />\n        </div>\n\n        <div class=\"field\">\n          <label for=\"doctorSelect\">Врач (только активный штат)</label>\n          <select id=\"doctorSelect\"></select>\n        </div>\n\n        <div class=\"field\">\n          <label for=\"timeSlot\">Время приёма</label>\n          <select id=\"timeSlot\">\n            <option value=\"Сегодня, 14:00\">Сегодня, 14:00</option>\n            <option value=\"Сегодня, 15:30\">Сегодня, 15:30</option>\n            <option value=\"Сегодня, 17:00\">Сегодня, 17:00</option>\n            <option value=\"Завтра, 11:00\">Завтра, 11:00</option>\n            <option value=\"Завтра, 16:00\">Завтра, 16:00</option>\n          </select>\n        </div>\n\n        <div class=\"field\">\n          <label for=\"complaints\">Жалобы или цель визита</label>\n          <textarea id=\"complaints\" placeholder=\"Кратко опишите, что беспокоит...\"></textarea>\n        </div>\n\n        <button class=\"btn\" id=\"bookBtn\" onclick=\"submitAppointment()\">Записаться на приём</button>\n        <div class=\"notice\" id=\"bookNotice\"></div>\n      </div>\n\n      <div class=\"glass card\">\n        <h3 class=\"card-title\">Активные врачи сейчас</h3>\n        <p class=\"card-desc\">Список формируется главным врачом MGH.</p>\n        <div id=\"activeDoctorsList\"></div>\n      </div>\n    </section>\n\n    <!-- ВКЛАДКА 2: АНКЕТА НА РАБОТУ -->\n    <section class=\"section\" id=\"tab-apply\">\n      <div class=\"glass card\">\n        <h2 class=\"card-title\">Анкета в штат MGH</h2>\n        <p class=\"card-desc\">Заполните анкету — администратор проверит её и сможет добавить вас в список врачей.</p>\n\n        <div class=\"field\">\n          <label for=\"appUsername\">Ваш @username в Telegram *</label>\n          <input type=\"text\" id=\"appUsername\" placeholder=\"@doctor_tg\" />\n        </div>\n\n        <div class=\"field\">\n          <label for=\"appName\">Имя и фамилия (или ник) *</label>\n          <input type=\"text\" id=\"appName\" placeholder=\"Д-р Кейтлин Сноу\" />\n        </div>\n\n        <div class=\"field\">\n          <label for=\"appRole\">Желаемая должность / отделение *</label>\n          <input type=\"text\" id=\"appRole\" placeholder=\"Например: Хирург, Терапевт, Парамедик\" />\n        </div>\n\n        <div class=\"field\">\n          <label for=\"appExp\">Опыт / стаж</label>\n          <input type=\"text\" id=\"appExp\" placeholder=\"Например: 3 года практики\" />\n        </div>\n\n        <div class=\"field\">\n          <label for=\"appAbout\">О себе и график</label>\n          <textarea id=\"appAbout\" placeholder=\"Когда обычно в сети, почему хотите в MGH...\"></textarea>\n        </div>\n\n        <button class=\"btn\" onclick=\"submitApplication()\">Отправить анкету</button>\n        <div class=\"notice\" id=\"appNotice\"></div>\n      </div>\n    </section>\n\n    <!-- ВКЛАДКА 3: УВЕДОМЛЕНИЯ -->\n    <section class=\"section\" id=\"tab-alerts\">\n      <div class=\"glass card\">\n        <div class=\"doc-top\">\n          <div>\n            <h2 class=\"card-title\">Напоминания и оповещения</h2>\n            <p class=\"card-desc\" style=\"margin-bottom:0;\">\n              При подключённом <b>bot.py</b> сообщения уходят в личку Telegram пациенту и врачу. Здесь показан журнал записей и отправок.\n            </p>\n          </div>\n          <button class=\"btn btn-ghost\" onclick=\"clearAlerts()\">Очистить</button>\n        </div>\n        <div id=\"alertsList\" style=\"margin-top:12px;\"></div>\n      </div>\n    </section>\n\n    <!-- ВКЛАДКА 4: АДМИН-ПАНЕЛЬ -->\n    <section class=\"section\" id=\"tab-admin\">\n      <div class=\"glass card\">\n        <h2 class=\"card-title\">Добавить врача в MGH</h2>\n        <p class=\"card-desc\">Укажите @username врача — бот будет отправлять ему уведомление о новом пациенте.</p>\n\n        <div class=\"field\">\n          <label for=\"newDocName\">Имя врача *</label>\n          <input type=\"text\" id=\"newDocName\" placeholder=\"Д-р Майкл Харрис\" />\n        </div>\n\n        <div class=\"field\">\n          <label for=\"newDocRole\">Специализация *</label>\n          <input type=\"text\" id=\"newDocRole\" placeholder=\"Кардиолог\" />\n        </div>\n\n        <div class=\"field\">\n          <label for=\"newDocUser\">@username врача в Telegram *</label>\n          <input type=\"text\" id=\"newDocUser\" placeholder=\"@harris_mgh\" />\n        </div>\n\n        <button class=\"btn\" onclick=\"addDoctor()\">Добавить врача</button>\n        <div class=\"notice\" id=\"adminNotice\"></div>\n      </div>\n\n      <div class=\"glass card\">\n        <h3 class=\"card-title\">Управление доступными врачами</h3>\n        <p class=\"card-desc\">Включайте или отключайте врачей — неактивные пропадают из записи.</p>\n        <div id=\"adminDoctorsList\"></div>\n      </div>\n\n      <div class=\"glass card\">\n        <h3 class=\"card-title\">Входящие анкеты на работу</h3>\n        <div id=\"adminAppsList\"></div>\n      </div>\n    </section>\n  </div>\n\n  <!-- МОДАЛЬНОЕ ОКНО ВВОДА КОДА АДМИНА -->\n  <div class=\"modal-backdrop\" id=\"pinModal\">\n    <div class=\"modal\">\n      <h3 class=\"card-title\">Вход для администратора MGH</h3>\n      <p class=\"card-desc\">Введите код доступа, чтобы открыть панель управления врачами и анкетами.</p>\n      <div class=\"field\">\n        <label for=\"pinInput\">Код доступа</label>\n        <input type=\"password\" id=\"pinInput\" inputmode=\"numeric\" placeholder=\"Введите код\" />\n      </div>\n      <div class=\"row-actions\">\n        <button class=\"btn\" style=\"flex:1;\" onclick=\"verifyPin()\">Войти</button>\n        <button class=\"btn btn-ghost\" onclick=\"closePinModal()\">Отмена</button>\n      </div>\n      <div class=\"notice\" id=\"pinNotice\"></div>\n    </div>\n  </div>\n\n  <script>
-    const ADMIN_CODE = "05061488";
-    const COOLDOWN_SEC = 15;
-    const STORAGE_KEY = "mgh_web_state_v1";
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Miami General Hospital (MGH)</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --text: #18203a;
+      --muted: #5c688c;
+      --purple: #7c5cff;
+      --grad: linear-gradient(135deg, #3b82f6 0%, #7c5cff 100%);
+      --grad-soft: linear-gradient(135deg, rgba(59,130,246,0.14), rgba(124,92,255,0.14));
+      --ok-bg: rgba(16,185,129,0.14); --ok-txt: #047857;
+      --warn-bg: rgba(245,158,11,0.16); --warn-txt: #b45309;
+      --err-bg: rgba(239,68,68,0.14); --err-txt: #b91c1c;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0; padding: 0; min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 12% 10%, rgba(96,165,250,0.36), transparent 45%),
+        radial-gradient(circle at 88% 14%, rgba(167,139,250,0.36), transparent 45%),
+        radial-gradient(circle at 50% 92%, rgba(125,211,252,0.32), transparent 50%),
+        linear-gradient(160deg, #eef4ff 0%, #e6e8ff 52%, #f3eaff 100%);
+      background-attachment: fixed;
+    }
+    .app { max-width: 540px; margin: 0 auto; padding: 14px 14px 96px; }
+    .glass { background: rgba(255,255,255,0.62); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.88); box-shadow: 0 10px 28px rgba(86,108,196,0.12), inset 0 1px 0 rgba(255,255,255,0.9); border-radius: 22px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; margin-bottom: 12px; }
+    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .logo { width: 42px; height: 42px; border-radius: 14px; background: var(--grad); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 14px; flex-shrink: 0; box-shadow: 0 6px 16px rgba(92,108,235,0.3); }
+    .brand-title { font-size: 15px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .role-btn { border: 1px solid rgba(124,92,255,0.28); background: rgba(255,255,255,0.82); color: var(--text); padding: 8px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+    .role-btn:active { transform: scale(0.96); }
+    .role-btn.admin-on { background: var(--grad); color: #fff; border-color: transparent; }
+    .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 5px; margin-bottom: 14px; }
+    .tabs.has-admin { grid-template-columns: repeat(4, 1fr); }
+    .tab-btn { border: none; background: transparent; color: var(--muted); font-weight: 600; font-size: 12.5px; padding: 9px 6px; border-radius: 16px; cursor: pointer; }
+    .tab-btn.active { background: rgba(255,255,255,0.82); color: var(--text); font-weight: 700; box-shadow: 0 4px 12px rgba(79,99,194,0.12); }
+    .section { display: none; }
+    .section.active { display: block; }
+    .card { padding: 15px; margin-bottom: 12px; }
+    .card-title { font-size: 15px; font-weight: 700; margin: 0 0 4px; }
+    .card-desc { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; line-height: 1.4; }
+    .field { margin-bottom: 11px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+    input, select, textarea { width: 100%; padding: 11px 13px; border-radius: 14px; border: 1px solid rgba(110,128,210,0.25); background: rgba(255,255,255,0.78); color: var(--text); font-size: 14px; font-family: inherit; outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: var(--purple); background: #fff; }
+    textarea { min-height: 72px; resize: vertical; }
+    .btn { width: 100%; border: none; border-radius: 15px; padding: 12px 14px; font-size: 14px; font-weight: 700; cursor: pointer; color: #fff; background: var(--grad); box-shadow: 0 8px 20px rgba(92,108,235,0.26); }
+    .btn:active:not(:disabled) { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-ghost { background: var(--grad-soft); color: var(--text); box-shadow: none; border: 1px solid rgba(124,92,255,0.2); padding: 8px 11px; font-size: 12px; width: auto; border-radius: 12px; }
+    .btn-danger { background: var(--err-bg); color: var(--err-txt); box-shadow: none; padding: 8px 11px; font-size: 12px; width: auto; border-radius: 12px; }
+    .btn-ok { background: var(--ok-bg); color: var(--ok-txt); box-shadow: none; padding: 8px 11px; font-size: 12px; width: auto; border-radius: 12px; }
+    .doc-item, .log-item, .app-item { padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.56); border: 1px solid rgba(255,255,255,0.8); margin-bottom: 9px; }
+    .doc-top, .log-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .doc-name { font-weight: 700; font-size: 14px; }
+    .doc-meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+    .pill { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
+    .pill.active { background: var(--ok-bg); color: var(--ok-txt); }
+    .pill.off { background: var(--err-bg); color: var(--err-txt); }
+    .pill.info { background: var(--grad-soft); color: var(--purple); }
+    .row-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .notice { padding: 10px 12px; border-radius: 14px; font-size: 12.5px; margin-top: 10px; line-height: 1.4; display: none; }
+    .notice.show { display: block; }
+    .notice.ok { background: var(--ok-bg); color: var(--ok-txt); }
+    .notice.err { background: var(--err-bg); color: var(--err-txt); }
+    .notice.warn { background: var(--warn-bg); color: var(--warn-txt); }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(24,32,58,0.35); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
+    .modal-backdrop.open { display: flex; }
+    .modal { width: 100%; max-width: 380px; padding: 18px; background: rgba(255,255,255,0.9); border-radius: 22px; border: 1px solid #fff; box-shadow: 0 20px 40px rgba(32,46,98,0.22); }
+    .empty { text-align: center; color: var(--muted); font-size: 13px; padding: 16px 8px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="glass topbar">
+      <div class="brand">
+        <div class="logo">MGH</div>
+        <div>
+          <div class="brand-title">Miami General Hospital</div>
+          <div class="brand-sub" id="modeSubtitle">MGH &bull; Режим пациента</div>
+        </div>
+      </div>
+      <button class="role-btn" id="roleBtn" onclick="onRoleClick()">Пациент</button>
+    </div>
+
+    <div class="glass tabs" id="tabsBar">
+      <button class="tab-btn active" data-tab="book" onclick="switchTab('book')">Запись</button>
+      <button class="tab-btn" data-tab="apply" onclick="switchTab('apply')">Анкета</button>
+      <button class="tab-btn" data-tab="alerts" onclick="switchTab('alerts')">Уведомления</button>
+      <button class="tab-btn" data-tab="admin" id="adminTabBtn" style="display:none;" onclick="switchTab('admin')">Админ</button>
+    </div>
+
+    <section class="section active" id="tab-book">
+      <div class="glass card">
+        <h2 class="card-title">Запись на приём в MGH</h2>
+        <p class="card-desc">Укажите ваш <b>@username</b> в Telegram (и запустите бота, чтобы получать напоминания). Кулдаун &mdash; <b>15 сек</b>.</p>
+        <div class="field"><label for="patientUsername">Ваш @username в Telegram *</label><input type="text" id="patientUsername" placeholder="@username" autocomplete="off" /></div>
+        <div class="field"><label for="patientName">Ваше имя</label><input type="text" id="patientName" placeholder="Например: Алексей" /></div>
+        <div class="field"><label for="doctorSelect">Врач (только активный штат)</label><select id="doctorSelect"></select></div>
+        <div class="field"><label for="timeSlot">Время приёма</label>
+          <select id="timeSlot">
+            <option value="Сегодня, 14:00">Сегодня, 14:00</option>
+            <option value="Сегодня, 15:30">Сегодня, 15:30</option>
+            <option value="Сегодня, 17:00">Сегодня, 17:00</option>
+            <option value="Завтра, 11:00">Завтра, 11:00</option>
+            <option value="Завтра, 16:00">Завтра, 16:00</option>
+          </select>
+        </div>
+        <div class="field"><label for="complaints">Жалобы или цель визита</label><textarea id="complaints" placeholder="Кратко опишите, что беспокоит..."></textarea></div>
+        <button class="btn" id="bookBtn" onclick="submitAppointment()">Записаться на приём</button>
+        <div class="notice" id="bookNotice"></div>
+      </div>
+      <div class="glass card">
+        <h3 class="card-title">Активные врачи сейчас</h3>
+        <p class="card-desc">Список формируется главным врачом MGH.</p>
+        <div id="activeDoctorsList"></div>
+      </div>
+    </section>
+
+    <section class="section" id="tab-apply">
+      <div class="glass card">
+        <h2 class="card-title">Анкета в штат MGH</h2>
+        <p class="card-desc">Заполните анкету &mdash; администратор проверит её и сможет добавить вас в список врачей.</p>
+        <div class="field"><label for="appUsername">Ваш @username в Telegram *</label><input type="text" id="appUsername" placeholder="@doctor_tg" /></div>
+        <div class="field"><label for="appName">Имя и фамилия (или ник) *</label><input type="text" id="appName" placeholder="Д-р Кейтлин Сноу" /></div>
+        <div class="field"><label for="appRole">Желаемая должность / отделение *</label><input type="text" id="appRole" placeholder="Например: Хирург" /></div>
+        <div class="field"><label for="appExp">Опыт / стаж</label><input type="text" id="appExp" placeholder="Например: 3 года практики" /></div>
+        <div class="field"><label for="appAbout">О себе и график</label><textarea id="appAbout" placeholder="Когда обычно в сети, почему хотите в MGH..."></textarea></div>
+        <button class="btn" onclick="submitApplication()">Отправить анкету</button>
+        <div class="notice" id="appNotice"></div>
+      </div>
+    </section>
+
+    <section class="section" id="tab-alerts">
+      <div class="glass card">
+        <div class="doc-top">
+          <div>
+            <h2 class="card-title">Напоминания и оповещения</h2>
+            <p class="card-desc" style="margin-bottom:0;">При подключённом <b>bot.py</b> сообщения уходят в личку Telegram пациенту и врачу. Здесь показан журнал записей.</p>
+          </div>
+          <button class="btn btn-ghost" onclick="clearAlerts()">Очистить</button>
+        </div>
+        <div id="alertsList" style="margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <section class="section" id="tab-admin">
+      <div class="glass card">
+        <h2 class="card-title">Добавить врача в MGH</h2>
+        <p class="card-desc">Укажите @username врача &mdash; бот будет отправлять ему уведомление о новом пациенте.</p>
+        <div class="field"><label for="newDocName">Имя врача *</label><input type="text" id="newDocName" placeholder="Д-р Майкл Харрис" /></div>
+        <div class="field"><label for="newDocRole">Специализация *</label><input type="text" id="newDocRole" placeholder="Кардиолог" /></div>
+        <div class="field"><label for="newDocUser">@username врача в Telegram *</label><input type="text" id="newDocUser" placeholder="@harris_mgh" /></div>
+        <button class="btn" onclick="addDoctor()">Добавить врача</button>
+        <div class="notice" id="adminNotice"></div>
+      </div>
+      <div class="glass card">
+        <h3 class="card-title">Управление доступными врачами</h3>
+        <p class="card-desc">Включайте или отключайте врачей &mdash; неактивные пропадают из записи.</p>
+        <div id="adminDoctorsList"></div>
+      </div>
+      <div class="glass card">
+        <h3 class="card-title">Входящие анкеты на работу</h3>
+        <div id="adminAppsList"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="pinModal">
+    <div class="modal">
+      <h3 class="card-title">Вход для администратора MGH</h3>
+      <p class="card-desc">Введите код доступа, чтобы открыть панель управления врачами и анкетами.</p>
+      <div class="field"><label for="pinInput">Код доступа</label><input type="password" id="pinInput" inputmode="numeric" placeholder="Введите код" /></div>
+      <div class="row-actions">
+        <button class="btn" style="flex:1;" onclick="verifyPin()">Войти</button>
+        <button class="btn btn-ghost" onclick="closePinModal()">Отмена</button>
+      </div>
+      <div class="notice" id="pinNotice"></div>
+    </div>
+  </div>
+
+  <script>
+    var ADMIN_CODE = "05061488";
+    var COOLDOWN_SEC = 15;
+    var STORAGE_KEY = "mgh_web_state_v1";
 
     // ====== НАСТРОЙКА: адрес сервера bot.py (HTTPS), например ngrok ======
-    const API_BASE = "https://ЗАМЕНИ_НА_АДРЕС_СЕРВЕРА.ngrok-free.app";
+    var API_BASE = "https://ZAMENI_NA_ADRES_SERVERA.ngrok-free.app";
 
-    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-    }
+    var tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+    if (tg) { tg.ready(); tg.expand(); }
 
-    function normUsername(val) {
-      return (val || "").trim().replace(/^@+/, "").toLowerCase();
-    }
-
-    function fmtUsername(val) {
-      const clean = normUsername(val);
-      return clean ? "@" + clean : "не указан";
-    }
+    function normUsername(val) { return (val || "").trim().replace(/^@+/, "").toLowerCase(); }
+    function fmtUsername(val) { var c = normUsername(val); return c ? "@" + c : "не указан"; }
 
     function getAccountKey() {
-      const tgUser = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+      var tgUser = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
       if (tgUser && tgUser.id) return "tg_" + tgUser.id;
-      const inputVal = normUsername(document.getElementById("patientUsername")?.value);
-      if (inputVal) return "u_" + inputVal;
+      var pe = document.getElementById("patientUsername");
+      var iv = normUsername(pe ? pe.value : "");
+      if (iv) return "u_" + iv;
       return "device_default";
     }
 
-    const defaultState = {
-      isAdmin: false,
-      doctors: [
-        { id: 1, name: "Д-р Маркус Вэнс", role: "Главный хирург", username: "mgh_vance", active: true },
-        { id: 2, name: "Д-р Елена Ростова", role: "Терапевт", username: "mgh_rostova", active: true },
-        { id: 3, name: "Д-р Алекс Чен", role: "Травматолог", username: "mgh_chen", active: true }
-      ],
-      applications: [],
-      appointments: [],
-      alerts: [],
-      cooldowns: {},
-      cooldownLeft: 0
-    };
+    var defaultDoctors = [
+      { id: 1, name: "Д-р Маркус Вэнс", role: "Главный хирург", username: "mgh_vance", active: true },
+      { id: 2, name: "Д-р Елена Ростова", role: "Терапевт", username: "mgh_rostova", active: true },
+      { id: 3, name: "Д-р Алекс Чен", role: "Травматолог", username: "mgh_chen", active: true }
+    ];
 
     function localState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : null;
+        var raw = localStorage.getItem(STORAGE_KEY);
+        var p = raw ? JSON.parse(raw) : null;
         return {
-          isAdmin: Boolean(parsed && parsed.isAdmin),
-          doctors: parsed && Array.isArray(parsed.doctors) ? parsed.doctors : structuredClone(defaultState.doctors),
-          applications: parsed && Array.isArray(parsed.applications) ? parsed.applications : [],
-          alerts: parsed && Array.isArray(parsed.alerts) ? parsed.alerts : [],
-          cooldowns: parsed && parsed.cooldowns ? parsed.cooldowns : {},
+          isAdmin: Boolean(p && p.isAdmin),
+          doctors: p && Array.isArray(p.doctors) ? p.doctors : JSON.parse(JSON.stringify(defaultDoctors)),
+          applications: p && Array.isArray(p.applications) ? p.applications : [],
+          alerts: p && Array.isArray(p.alerts) ? p.alerts : [],
+          cooldowns: p && p.cooldowns ? p.cooldowns : {},
           cooldownLeft: 0
         };
-      } catch {
-        return structuredClone(defaultState);
+      } catch (e) {
+        return { isAdmin: false, doctors: JSON.parse(JSON.stringify(defaultDoctors)), applications: [], alerts: [], cooldowns: {}, cooldownLeft: 0 };
       }
     }
 
-    // state.doctors: {id, name, role, username, active|is_active}
-    let state = localState();
-    let serverOnline = false;
+    var state = localState();
+    var serverOnline = false;
 
-    function docActive(d) {
-      return d.active === undefined ? !!d.is_active : !!d.active;
-    }
+    function docActive(d) { return d.active === undefined ? !!d.is_active : !!d.active; }
+    function mapServerDoc(d) { return { id: d.id, name: d.name, role: d.role, username: d.username, tg_id: d.tg_id || 0, active: !!d.is_active }; }
 
-    function mapServerDoc(d) {
-      return { id: d.id, name: d.name, role: d.role, username: d.username, tg_id: d.tg_id || 0, active: !!d.is_active };
-    }
-
-    async function apiFetch(path, options) {
-      const res = await fetch(API_BASE + path, {
-        ...options,
-        headers: { "Content-Type": "application/json", ...(options && options.headers ? options.headers : {}) }
+    function apiFetch(path, options) {
+      var opts = options || {};
+      return fetch(API_BASE + path, {
+        method: opts.method || "GET",
+        headers: { "Content-Type": "application/json" },
+        body: opts.body
+      }).then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (body) {
+          if (!res.ok) throw new Error(body.detail || ("Ошибка сервера: " + res.status));
+          return body;
+        });
       });
-      const body = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(body.detail || ("Ошибка сервера: " + res.status));
-      return body;
     }
 
-    async function loadState() {
-      const key = getAccountKey();
-      try {
-        const data = await apiFetch("/api/state?sender_key=" + encodeURIComponent(key));
+    function loadState() {
+      var key = getAccountKey();
+      return apiFetch("/api/state?sender_key=" + encodeURIComponent(key)).then(function (data) {
         serverOnline = true;
         state.doctors = (data.doctors || []).map(mapServerDoc);
-        state.applications = (data.applications || []).map(a => ({
-          id: a.id, username: a.applicant_username, name: a.name,
-          role: a.role, experience: a.experience, about: a.about
-        }));
+        state.applications = (data.applications || []).map(function (a) {
+          return { id: a.id, username: a.applicant_username, name: a.name, role: a.role, experience: a.experience, about: a.about };
+        });
         state.appointments = data.appointments || [];
         state.cooldownLeft = data.cooldown_left || 0;
         saveState();
-      } catch (e) {
-        serverOnline = false;
-        state = localState();
-      }
+      }).catch(function () { serverOnline = false; state = localState(); });
     }
 
     function saveState() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          isAdmin: state.isAdmin,
-          doctors: state.doctors,
-          applications: state.applications,
-          alerts: state.alerts,
-          cooldowns: state.cooldowns
-        }));
-      } catch {}
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ isAdmin: state.isAdmin, doctors: state.doctors, applications: state.applications, alerts: state.alerts, cooldowns: state.cooldowns }));
+      } catch (e) {}
     }
 
-    const initTgUser = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+    var initTgUser = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
     if (initTgUser && initTgUser.username) {
-      const pInput = document.getElementById("patientUsername");
-      const aInput = document.getElementById("appUsername");
+      var pInput = document.getElementById("patientUsername");
+      var aInput = document.getElementById("appUsername");
       if (pInput && !pInput.value) pInput.value = "@" + initTgUser.username;
       if (aInput && !aInput.value) aInput.value = "@" + initTgUser.username;
     }
 
-    function showNotice(id, text, type = "ok") {
-      const el = document.getElementById(id);
+    function showNotice(id, text, type) {
+      var el = document.getElementById(id);
       if (!el) return;
-      el.textContent = text;
-      el.className = "notice show " + type;
+      el.textContent = text; el.className = "notice show " + (type || "ok");
     }
-
     function hideNotice(id) {
-      const el = document.getElementById(id);
+      var el = document.getElementById(id);
       if (!el) return;
-      el.className = "notice";
-      el.textContent = "";
+      el.className = "notice"; el.textContent = "";
     }
 
     function switchTab(tabName) {
-      if (tabName === "admin" && !state.isAdmin) {
-        openPinModal();
-        return;
-      }
-      document.querySelectorAll(".tab-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.tab === tabName);
-      });
-      document.querySelectorAll(".section").forEach(sec => {
-        sec.classList.toggle("active", sec.id === "tab-" + tabName);
-      });
+      if (tabName === "admin" && !state.isAdmin) { openPinModal(); return; }
+      var btns = document.querySelectorAll(".tab-btn");
+      for (var i = 0; i < btns.length; i++) btns[i].classList.toggle("active", btns[i].dataset.tab === tabName);
+      var secs = document.querySelectorAll(".section");
+      for (var j = 0; j < secs.length; j++) secs[j].classList.toggle("active", secs[j].id === "tab-" + tabName);
       if (serverOnline) loadState().then(renderAll); else renderAll();
     }
 
     function onRoleClick() {
       if (state.isAdmin) {
-        state.isAdmin = false;
-        saveState();
-        const activeTab = document.querySelector(".tab-btn.active")?.dataset.tab;
-        if (activeTab === "admin") switchTab("book");
+        state.isAdmin = false; saveState();
+        var active = document.querySelector(".tab-btn.active");
+        if (active && active.dataset.tab === "admin") switchTab("book");
         renderAll();
-      } else {
-        openPinModal();
-      }
+      } else { openPinModal(); }
     }
 
     function openPinModal() {
       hideNotice("pinNotice");
       document.getElementById("pinInput").value = "";
       document.getElementById("pinModal").classList.add("open");
-      setTimeout(() => document.getElementById("pinInput").focus(), 50);
+      setTimeout(function () { document.getElementById("pinInput").focus(); }, 50);
     }
-
-    function closePinModal() {
-      document.getElementById("pinModal").classList.remove("open");
-    }
+    function closePinModal() { document.getElementById("pinModal").classList.remove("open"); }
 
     function verifyPin() {
-      const code = (document.getElementById("pinInput").value || "").trim();
-      if (code === ADMIN_CODE) {
-        state.isAdmin = true;
-        saveState();
-        closePinModal();
-        renderAll();
-        switchTab("admin");
-      } else {
-        showNotice("pinNotice", "Неверный код доступа.", "err");
-      }
+      var code = (document.getElementById("pinInput").value || "").trim();
+      if (code === ADMIN_CODE) { state.isAdmin = true; saveState(); closePinModal(); renderAll(); switchTab("admin"); }
+      else { showNotice("pinNotice", "Неверный код доступа.", "err"); }
     }
 
     function getCooldownLeft() {
       if (serverOnline && state.cooldownLeft > 0) return state.cooldownLeft;
-      const last = Number(state.cooldowns[getAccountKey()] || 0);
-      const elapsed = Math.floor((Date.now() - last) / 1000);
+      var last = Number(state.cooldowns[getAccountKey()] || 0);
+      var elapsed = Math.floor((Date.now() - last) / 1000);
       return Math.max(0, COOLDOWN_SEC - elapsed);
     }
 
     function updateCooldownUI() {
-      const left = getCooldownLeft();
-      const btn = document.getElementById("bookBtn");
+      var left = getCooldownLeft();
+      var btn = document.getElementById("bookBtn");
       if (!btn) return;
-      if (left > 0) {
-        btn.disabled = true;
-        btn.textContent = `Подождите ${left} сек. (кулдаун)`;
-      } else {
-        btn.disabled = false;
-        btn.textContent = "Записаться на приём";
-      }
+      if (left > 0) { btn.disabled = true; btn.textContent = "Подождите " + left + " сек. (кулдаун)"; }
+      else { btn.disabled = false; btn.textContent = "Записаться на приём"; }
     }
 
-    async function submitAppointment() {
+    function submitAppointment() {
       hideNotice("bookNotice");
-      const pUser = normUsername(document.getElementById("patientUsername").value);
-      if (!pUser) {
-        showNotice("bookNotice", "Укажите ваш @username в Telegram.", "err");
-        return;
-      }
-
-      const activeDocs = state.doctors.filter(docActive);
-      const docId = Number(document.getElementById("doctorSelect").value);
-      const doc = activeDocs.find(d => d.id === docId);
-      if (!doc) {
-        showNotice("bookNotice", "Сейчас нет доступных активных врачей.", "err");
-        return;
-      }
-
-      const pName = (document.getElementById("patientName").value || "").trim() || ("@" + pUser);
-      const timeSlot = document.getElementById("timeSlot").value;
-      const complaints = (document.getElementById("complaints").value || "").trim() || "Плановый осмотр";
-
-      const payload = {
-        sender_key: getAccountKey(),
-        patient_username: pUser,
-        patient_name: pName,
-        doctor_id: doc.id,
-        time_slot: timeSlot,
-        complaints
-      };
+      var pUser = normUsername(document.getElementById("patientUsername").value);
+      if (!pUser) { showNotice("bookNotice", "Укажите ваш @username в Telegram.", "err"); return; }
+      var activeDocs = state.doctors.filter(docActive);
+      var docId = Number(document.getElementById("doctorSelect").value);
+      var doc = null;
+      for (var i = 0; i < activeDocs.length; i++) if (activeDocs[i].id === docId) doc = activeDocs[i];
+      if (!doc) { showNotice("bookNotice", "Сейчас нет доступных активных врачей.", "err"); return; }
+      var pName = (document.getElementById("patientName").value || "").trim() || ("@" + pUser);
+      var timeSlot = document.getElementById("timeSlot").value;
+      var complaints = (document.getElementById("complaints").value || "").trim() || "Плановый осмотр";
 
       if (serverOnline) {
-        try {
-          await apiFetch("/api/appointments", { method: "POST", body: JSON.stringify(payload) });
-          showNotice("bookNotice", `Запись создана! Уведомления отправлены пациенту (${fmtUsername(pUser)}) и врачу (${doc.name}, ${fmtUsername(doc.username)}).`, "ok");
-          await loadState();
-          renderAll();
-          return;
-        } catch (e) {
-          showNotice("bookNotice", String(e.message || e), "err");
-          return;
-        }
+        apiFetch("/api/appointments", { method: "POST", body: JSON.stringify({ sender_key: getAccountKey(), patient_username: pUser, patient_name: pName, doctor_id: doc.id, time_slot: timeSlot, complaints: complaints }) })
+          .then(function () {
+            showNotice("bookNotice", "Запись создана! Уведомления отправлены пациенту (" + fmtUsername(pUser) + ") и врачу (" + doc.name + ", " + fmtUsername(doc.username) + ").", "ok");
+            loadState().then(renderAll);
+          })
+          .catch(function (e) { showNotice("bookNotice", String(e.message || e), "err"); });
+        return;
       }
 
-      // Офлайн-режим (сервер недоступен): только локальный журнал
       state.cooldowns[getAccountKey()] = Date.now();
-      const nowTime = new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
-      state.alerts.unshift({
-        id: Date.now() + Math.random(),
-        time: nowTime,
-        toPatient: fmtUsername(pUser),
-        toDoctor: fmtUsername(doc.username),
-        doctorName: doc.name,
-        doctorRole: doc.role,
-        patientName: pName,
-        timeSlot,
-        complaints
-      });
+      var nowTime = new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+      state.alerts.unshift({ id: Date.now() + Math.random(), time: nowTime, toPatient: fmtUsername(pUser), toDoctor: fmtUsername(doc.username), doctorName: doc.name, doctorRole: doc.role, patientName: pName, timeSlot: timeSlot, complaints: complaints });
       if (state.alerts.length > 40) state.alerts.length = 40;
-      saveState();
-      updateCooldownUI();
-      renderAlerts();
-      showNotice("bookNotice", "Сервер недоступен: запись сохранена только локально, уведомления в Telegram не отправлены. Впиши адрес сервера в API_BASE в начале файла.", "warn");
+      saveState(); updateCooldownUI(); renderAlerts();
+      showNotice("bookNotice", "Сервер недоступен: запись сохранена только локально, уведомления не отправлены. Нужно вписать адрес сервера в API_BASE.", "warn");
     }
 
-    async function submitApplication() {
+    function submitApplication() {
       hideNotice("appNotice");
-      const u = normUsername(document.getElementById("appUsername").value);
-      const name = (document.getElementById("appName").value || "").trim();
-      const role = (document.getElementById("appRole").value || "").trim();
-      const exp = (document.getElementById("appExp").value || "").trim() || "Не указан";
-      const about = (document.getElementById("appAbout").value || "").trim();
+      var u = normUsername(document.getElementById("appUsername").value);
+      var name = (document.getElementById("appName").value || "").trim();
+      var role = (document.getElementById("appRole").value || "").trim();
+      var exp = (document.getElementById("appExp").value || "").trim() || "Не указан";
+      var about = (document.getElementById("appAbout").value || "").trim();
+      if (!u || !name || !role) { showNotice("appNotice", "Заполните @username, имя и желаемую должность.", "err"); return; }
 
-      if (!u || !name || !role) {
-        showNotice("appNotice", "Заполните @username, имя и желаемую должность.", "err");
+      if (serverOnline) {
+        apiFetch("/api/applications", { method: "POST", body: JSON.stringify({ applicant_username: u, name: name, role: role, experience: exp, about: about }) })
+          .then(function () { showNotice("appNotice", "Анкета отправлена в Miami General Hospital на проверку.", "ok"); loadState().then(renderAll); })
+          .catch(function (e) { showNotice("appNotice", String(e.message || e), "err"); });
         return;
       }
 
-      if (serverOnline) {
-        try {
-          await apiFetch("/api/applications", {
-            method: "POST",
-            body: JSON.stringify({ applicant_username: u, name, role, experience: exp, about })
-          });
-          showNotice("appNotice", "Анкета отправлена в Miami General Hospital на проверку.", "ok");
-          await loadState();
-          renderAll();
-          return;
-        } catch (e) {
-          showNotice("appNotice", String(e.message || e), "err");
-          return;
-        }
-      }
-
-      state.applications.unshift({ id: Date.now(), username: u, name, role, experience: exp, about });
+      state.applications.unshift({ id: Date.now(), username: u, name: name, role: role, experience: exp, about: about });
       saveState();
       showNotice("appNotice", "Сервер недоступен: анкета сохранена локально.", "warn");
       if (state.isAdmin) renderAdminApps();
     }
 
-    async function addDoctor() {
+    function addDoctor() {
       hideNotice("adminNotice");
       if (!state.isAdmin) return;
-
-      const name = (document.getElementById("newDocName").value || "").trim();
-      const role = (document.getElementById("newDocRole").value || "").trim();
-      const username = normUsername(document.getElementById("newDocUser").value);
-
-      if (!name || !role || !username) {
-        showNotice("adminNotice", "Укажите имя врача, специализацию и @username.", "err");
-        return;
-      }
-
-      try {
-        await apiFetch("/api/admin/add-doctor", {
-          method: "POST",
-          body: JSON.stringify({ pin: ADMIN_CODE, name, role, username })
-        });
-        document.getElementById("newDocName").value = "";
-        document.getElementById("newDocRole").value = "";
-        document.getElementById("newDocUser").value = "";
-        showNotice("adminNotice", `Врач ${name} (${fmtUsername(username)}) добавлен в штат.`, "ok");
-        await loadState();
-        renderAll();
-      } catch (e) {
-        showNotice("adminNotice", String(e.message || e), "err");
-      }
+      var name = (document.getElementById("newDocName").value || "").trim();
+      var role = (document.getElementById("newDocRole").value || "").trim();
+      var username = normUsername(document.getElementById("newDocUser").value);
+      if (!name || !role || !username) { showNotice("adminNotice", "Укажите имя врача, специализацию и @username.", "err"); return; }
+      apiFetch("/api/admin/add-doctor", { method: "POST", body: JSON.stringify({ pin: ADMIN_CODE, name: name, role: role, username: username }) })
+        .then(function () {
+          document.getElementById("newDocName").value = "";
+          document.getElementById("newDocRole").value = "";
+          document.getElementById("newDocUser").value = "";
+          showNotice("adminNotice", "Врач " + name + " (" + fmtUsername(username) + ") добавлен в штат.", "ok");
+          loadState().then(renderAll);
+        })
+        .catch(function (e) { showNotice("adminNotice", String(e.message || e), "err"); });
     }
 
-    async function toggleDoctor(id) {
+    function toggleDoctor(id) {
       if (!state.isAdmin) return;
-      try {
-        await apiFetch("/api/admin/toggle-doctor", {
-          method: "POST",
-          body: JSON.stringify({ pin: ADMIN_CODE, doctor_id: id })
-        });
-        await loadState();
-        renderAll();
-      } catch (e) {
-        showNotice("adminNotice", String(e.message || e), "err");
-      }
+      apiFetch("/api/admin/toggle-doctor", { method: "POST", body: JSON.stringify({ pin: ADMIN_CODE, doctor_id: id }) })
+        .then(function () { loadState().then(renderAll); })
+        .catch(function (e) { showNotice("adminNotice", String(e.message || e), "err"); });
     }
 
-    async function reviewApplication(appId, approve) {
+    function reviewApplication(appId, approve) {
       if (!state.isAdmin) return;
-      try {
-        await apiFetch("/api/admin/review-app", {
-          method: "POST",
-          body: JSON.stringify({ pin: ADMIN_CODE, app_id: appId, approve })
-        });
-        showNotice("adminNotice", approve ? "Анкета одобрена, врач добавлен в штат." : "Анкета отклонена.", "ok");
-        await loadState();
-        renderAll();
-      } catch (e) {
-        showNotice("adminNotice", String(e.message || e), "err");
-      }
+      apiFetch("/api/admin/review-app", { method: "POST", body: JSON.stringify({ pin: ADMIN_CODE, app_id: appId, approve: approve }) })
+        .then(function () { showNotice("adminNotice", approve ? "Анкета одобрена, врач добавлен в штат." : "Анкета отклонена.", "ok"); loadState().then(renderAll); })
+        .catch(function (e) { showNotice("adminNotice", String(e.message || e), "err"); });
     }
 
-    function clearAlerts() {
-      state.alerts = [];
-      saveState();
-      renderAlerts();
-    }
+    function clearAlerts() { state.alerts = []; saveState(); renderAlerts(); }
+
+    function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
     function renderHeaderAndTabs() {
-      const roleBtn = document.getElementById("roleBtn");
-      const sub = document.getElementById("modeSubtitle");
-      const adminTab = document.getElementById("adminTabBtn");
-      const tabsBar = document.getElementById("tabsBar");
-
+      var roleBtn = document.getElementById("roleBtn");
+      var sub = document.getElementById("modeSubtitle");
+      var adminTab = document.getElementById("adminTabBtn");
+      var tabsBar = document.getElementById("tabsBar");
       if (state.isAdmin) {
-        roleBtn.textContent = "Админ MGH";
-        roleBtn.classList.add("admin-on");
-        sub.textContent = "MGH • Главврач (режим управления)" + (serverOnline ? "" : " • офлайн");
-        adminTab.style.display = "block";
-        tabsBar.classList.add("has-admin");
+        roleBtn.textContent = "Админ MGH"; roleBtn.classList.add("admin-on");
+        sub.textContent = "MGH • Главврач" + (serverOnline ? "" : " • офлайн");
+        adminTab.style.display = "block"; tabsBar.classList.add("has-admin");
       } else {
-        roleBtn.textContent = "Пациент";
-        roleBtn.classList.remove("admin-on");
+        roleBtn.textContent = "Пациент"; roleBtn.classList.remove("admin-on");
         sub.textContent = "MGH • Режим пациента" + (serverOnline ? "" : " • офлайн");
-        adminTab.style.display = "none";
-        tabsBar.classList.remove("has-admin");
+        adminTab.style.display = "none"; tabsBar.classList.remove("has-admin");
       }
     }
 
     function renderDoctors() {
-      const activeDocs = state.doctors.filter(docActive);
-      const select = document.getElementById("doctorSelect");
-      const prevVal = Number(select.value);
-
-      if (activeDocs.length === 0) {
-        select.innerHTML = `<option value="">Нет активных врачей</option>`;
-      } else {
-        select.innerHTML = activeDocs
-          .map(d => `<option value="${d.id}">${d.name} — ${d.role} (${fmtUsername(d.username)})</option>`)
-          .join("");
-        if (activeDocs.some(d => d.id === prevVal)) {
-          select.value = String(prevVal);
-        }
+      var activeDocs = state.doctors.filter(docActive);
+      var select = document.getElementById("doctorSelect");
+      var prevVal = Number(select.value);
+      if (activeDocs.length === 0) { select.innerHTML = '<option value="">Нет активных врачей</option>'; }
+      else {
+        var html = "";
+        for (var i = 0; i < activeDocs.length; i++) html += '<option value="' + activeDocs[i].id + '">' + esc(activeDocs[i].name) + " — " + esc(activeDocs[i].role) + " (" + fmtUsername(activeDocs[i].username) + ")</option>";
+        select.innerHTML = html;
+        for (var k = 0; k < activeDocs.length; k++) if (activeDocs[k].id === prevVal) select.value = String(prevVal);
       }
-
-      const listEl = document.getElementById("activeDoctorsList");
-      listEl.innerHTML = activeDocs.length === 0
-        ? `<div class="empty">Сейчас активных врачей нет.</div>`
-        : activeDocs.map(d => `
-            <div class="doc-item">
-              <div class="doc-top">
-                <div class="doc-name">${d.name}</div>
-                <span class="pill active">Принимает</span>
-              </div>
-              <div class="doc-meta">${d.role} • TG врача: <b>${fmtUsername(d.username)}</b></div>
-            </div>
-          `).join("");
-
-      const adminList = document.getElementById("adminDoctorsList");
-      adminList.innerHTML = state.doctors.length === 0
-        ? `<div class="empty">Список врачей пуст.</div>`
-        : state.doctors.map(d => `
-            <div class="doc-item">
-              <div class="doc-top">
-                <div class="doc-name">${d.name}</div>
-                <span class="pill ${docActive(d) ? "active" : "off"}">${docActive(d) ? "Активен" : "Отключён"}</span>
-              </div>
-              <div class="doc-meta">${d.role} • TG: <b>${fmtUsername(d.username)}</b></div>
-              <div class="row-actions">
-                <button class="btn btn-ghost" onclick="toggleDoctor(${d.id})">${docActive(d) ? "Отключить" : "Включить"}</button>
-              </div>
-            </div>
-          `).join("");
+      var listEl = document.getElementById("activeDoctorsList");
+      if (activeDocs.length === 0) { listEl.innerHTML = '<div class="empty">Сейчас активных врачей нет.</div>'; }
+      else {
+        var h = "";
+        for (var a = 0; a < activeDocs.length; a++) {
+          h += '<div class="doc-item"><div class="doc-top"><div class="doc-name">' + esc(activeDocs[a].name) + '</div><span class="pill active">Принимает</span></div>'
+            + '<div class="doc-meta">' + esc(activeDocs[a].role) + " • TG врача: <b>" + fmtUsername(activeDocs[a].username) + "</b></div></div>";
+        }
+        listEl.innerHTML = h;
+      }
+      var adminList = document.getElementById("adminDoctorsList");
+      if (state.doctors.length === 0) { adminList.innerHTML = '<div class="empty">Список врачей пуст.</div>'; }
+      else {
+        var hh = "";
+        for (var b = 0; b < state.doctors.length; b++) {
+          var d = state.doctors[b];
+          hh += '<div class="doc-item"><div class="doc-top"><div class="doc-name">' + esc(d.name) + '</div><span class="pill ' + (docActive(d) ? "active" : "off") + '">' + (docActive(d) ? "Активен" : "Отключён") + '</span></div>'
+            + '<div class="doc-meta">' + esc(d.role) + " • TG: <b>" + fmtUsername(d.username) + "</b></div>"
+            + '<div class="row-actions"><button class="btn btn-ghost" onclick="toggleDoctor(' + d.id + ')" style="width:auto;">' + (docActive(d) ? "Отключить" : "Включить") + "</button></div></div>";
+        }
+        adminList.innerHTML = hh;
+      }
     }
 
     function renderAdminApps() {
-      const wrap = document.getElementById("adminAppsList");
-      if (state.applications.length === 0) {
-        wrap.innerHTML = `<div class="empty">Новых анкет пока нет.</div>`;
-        return;
+      var wrap = document.getElementById("adminAppsList");
+      if (state.applications.length === 0) { wrap.innerHTML = '<div class="empty">Новых анкет пока нет.</div>'; return; }
+      var h = "";
+      for (var i = 0; i < state.applications.length; i++) {
+        var x = state.applications[i];
+        h += '<div class="app-item"><div class="doc-top"><div class="doc-name">' + esc(x.name) + " (" + fmtUsername(x.username) + ')</div><span class="pill info">' + esc(x.role) + "</span></div>"
+          + '<div class="doc-meta">Стаж: ' + esc(x.experience) + (x.about ? " • " + esc(x.about) : "") + "</div>"
+          + '<div class="row-actions"><button class="btn btn-ok" onclick="reviewApplication(' + x.id + ', true)" style="width:auto;">Принять в штат</button>'
+          + '<button class="btn btn-danger" onclick="reviewApplication(' + x.id + ', false)" style="width:auto;">Отклонить</button></div></div>";
       }
-      wrap.innerHTML = state.applications
-        .map(a => `
-          <div class="app-item">
-            <div class="doc-top">
-              <div class="doc-name">${a.name} (${fmtUsername(a.username)})</div>
-              <span class="pill info">${a.role}</span>
-            </div>
-            <div class="doc-meta">Стаж: ${a.experience}${a.about ? " • " + a.about : ""}</div>
-            <div class="row-actions">
-              <button class="btn btn-ok" onclick="reviewApplication(${a.id}, true)">Принять в штат</button>
-              <button class="btn btn-danger" onclick="reviewApplication(${a.id}, false)">Отклонить</button>
-            </div>
-          </div>
-        `)
-        .join("");
+      wrap.innerHTML = h;
     }
 
     function renderAlerts() {
-      const wrap = document.getElementById("alertsList");
-
+      var wrap = document.getElementById("alertsList");
       if (serverOnline) {
-        const appts = state.appointments || [];
-        wrap.innerHTML = appts.length === 0
-          ? `<div class="empty">Записей пока нет. Оформите запись во вкладке «Запись».</div>`
-          : appts.map(a => `
-              <div class="log-item">
-                <div class="log-top">
-                  <div class="doc-name">${a.time_slot} — ${a.doctor_name}</div>
-                  <span class="pill info">запись</span>
-                </div>
-                <div class="doc-meta">
-                  Пациент: <b>${a.patient_name}</b> (${fmtUsername(a.patient_username)})<br/>
-                  Врач: <b>${fmtUsername(a.doctor_username)}</b> (${a.doctor_name})<br/>
-                  Причина: ${a.complaints || "Плановый осмотр"}<br/>
-                  Создана: ${a.created_at || ""}
-                </div>
-              </div>
-            `).join("");
+        var appts = state.appointments || [];
+        if (appts.length === 0) { wrap.innerHTML = '<div class="empty">Записей пока нет. Оформите запись во вкладке «Запись».</div>'; return; }
+        var h = "";
+        for (var i = 0; i < appts.length; i++) {
+          var a = appts[i];
+          h += '<div class="log-item"><div class="log-top"><div class="doc-name">' + esc(a.time_slot) + " — " + esc(a.doctor_name) + '</div><span class="pill info">запись</span></div>'
+            + '<div class="doc-meta">Пациент: <b>' + esc(a.patient_name) + "</b> (" + fmtUsername(a.patient_username) + ")<br/>"
+            + "Врач: <b>" + fmtUsername(a.doctor_username) + "</b> (" + esc(a.doctor_name) + ")<br/>"
+            + "Причина: " + esc(a.complaints || "Плановый осмотр") + "<br/>"
+            + "Создана: " + esc(a.created_at || "") + "</div></div>";
+        }
+        wrap.innerHTML = h;
         return;
       }
-
-      wrap.innerHTML = state.alerts.length === 0
-        ? `<div class="empty">Записей и напоминаний пока нет (офлайн-режим).</div>`
-        : state.alerts.map(item => `
-            <div class="log-item">
-              <div class="log-top">
-                <div class="doc-name">${item.timeSlot} — ${item.doctorName}</div>
-                <span class="pill info">${item.time}</span>
-              </div>
-              <div class="doc-meta">
-                Напоминание пациенту: <b>${item.patientName}</b> (${item.toPatient})<br/>
-                Оповещение врачу: <b>${item.toDoctor}</b> (${item.doctorRole})<br/>
-                Причина: ${item.complaints}
-              </div>
-            </div>
-          `).join("");
+      if (state.alerts.length === 0) { wrap.innerHTML = '<div class="empty">Записей и напоминаний пока нет (офлайн-режим).</div>'; return; }
+      var hh = "";
+      for (var j = 0; j < state.alerts.length; j++) {
+        var it = state.alerts[j];
+        hh += '<div class="log-item"><div class="log-top"><div class="doc-name">' + esc(it.timeSlot) + " — " + esc(it.doctorName) + '</div><span class="pill info">' + esc(it.time) + "</span></div>"
+          + '<div class="doc-meta">Напоминание пациенту: <b>' + esc(it.patientName) + "</b> (" + it.toPatient + ")<br/>"
+          + "Оповещение врачу: <b>" + it.toDoctor + "</b> (" + esc(it.doctorRole) + ")<br/>"
+          + "Причина: " + esc(it.complaints) + "</div></div>";
+      }
+      wrap.innerHTML = hh;
     }
 
     function renderAll() {
-      renderHeaderAndTabs();
-      renderDoctors();
-      renderAdminApps();
-      renderAlerts();
-      updateCooldownUI();
+      renderHeaderAndTabs(); renderDoctors(); renderAdminApps(); renderAlerts(); updateCooldownUI();
     }
 
-    loadState().finally(() => {
-      renderAll();
-      setInterval(updateCooldownUI, 500);
-      setInterval(() => loadState().then(renderAll).catch(() => {}), 20000);
-    });
-  </script>\n</body>\n</html>\n"}}]
+    loadState().then(function () { renderAll(); }).catch(function () { renderAll(); });
+    setInterval(updateCooldownUI, 500);
+    setInterval(function () { loadState().then(renderAll).catch(function () {}); }, 20000);
+  </script>
+</body>
+</html>
