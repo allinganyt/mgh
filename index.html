@@ -615,11 +615,8 @@
     }
 
     function apiFetch(path, options) {
-      if (!API_BASE) {
-        return Promise.reject(new Error("API_BASE не задан"));
-      }
       var opts = options || {};
-      return fetch(API_BASE + path, {
+      return fetch((API_BASE || "") + path, {
         method: opts.method || "GET",
         headers: { "Content-Type": "application/json" },
         body: opts.body
@@ -632,10 +629,6 @@
     }
 
     function loadState() {
-      if (!API_BASE) {
-        serverOnline = false;
-        return Promise.resolve();
-      }
       var key = getAccountKey();
       return apiFetch("/api/state?sender_key=" + encodeURIComponent(key)).then(function (data) {
         serverOnline = true;
