@@ -14,11 +14,11 @@ from aiogram.types import Message, WebAppInfo, InlineKeyboardMarkup, InlineKeybo
 import uvicorn
 
 BOT_TOKEN = os.getenv("BOT_TOKEN", "ВСТАВЬ_ТОКЕН_ОТ_BOTFATHER")
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://ТВОЙ_HTTPS_АДРЕС.ngrok-free.app")
+WEBAPP_URL = os.getenv("WEBAPP_URL") or os.getenv("RENDER_EXTERNAL_URL") or "https://ТВОЙ_HTTPS_АДРЕС.ngrok-free.app"
 ADMIN_PIN = os.getenv("ADMIN_PIN", "05061488")
 APP_TIMEZONE = ZoneInfo(os.getenv("APP_TIMEZONE", "Europe/Paris"))
 COOLDOWN_SECONDS = 15
-DB_PATH = "mgh_light.db"
+DB_PATH = os.getenv("DB_PATH", "mgh_light.db")
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -174,6 +174,10 @@ async def cmd_start(message: Message):
         reply_markup=kb,
         parse_mode="Markdown"
     )
+
+@app.get("/health")
+async def health():
+    return {"ok": True, "service": "MGH"}
 
 @app.get("/")
 async def index():
@@ -376,7 +380,7 @@ async def reminder_loop():
 
 async def main():
     await init_db()
-    server = uvicorn.Server(uvicorn.Config(app, host="0.0.0.0", port=8000, log_level="info"))
+    server = uvicorn.Server(uvicorn.Config(app, host="0.0.0.0", port=int(os.getenv("PORT", "8000")), log_level="info"))
     await asyncio.gather(server.serve(), dp.start_polling(bot), reminder_loop())
 
 if __name__ == "__main__":
