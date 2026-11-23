@@ -1,47 +1,59 @@
 # MGH — Miami General Hospital
 
-Telegram Mini App больницы: веб-приложение `index.html`, API и Telegram-бот в `bot.py`.
+Telegram Mini App и бот MGH. Backend переведён на **Google Apps Script + Google Sheets**: не нужен Render, VPS или банковская карта.
 
-## Что умеет бот
+## Архитектура
 
-- После `/start` сохраняет Telegram chat ID пользователя для уведомлений.
-- При успешной записи отправляет пациенту подтверждение, а врачу — сообщение о новом пациенте.
-- Сохраняет дату и время приёма в SQLite.
-- Фоновая задача проверяет записи каждые 10 секунд и отправляет пациенту сообщение, когда наступает время приёма.
-- Для существующей базы автоматически добавляются поля расписания и статуса напоминания.
+- `Code.gs` — Google Apps Script backend: API для Mini App, Telegram webhook, запись и напоминания.
+- `index.html` — Mini App frontend; запросы к Apps Script идут JSONP, чтобы обойти CORS/preflight.
+- Google Sheets — постоянная база данных: врачи, пользователи Telegram, записи и анкеты.
+- Триггер Apps Script раз в минуту отправляет напоминания. Закрытие/сворачивание Telegram не удаляет данные; они остаются в Google Sheets.
+- Бот регистрирует Telegram chat ID после `/start`. Пользователь должен нажать Start, иначе бот не сможет написать ему первым.
 
-## Деплой на Render
+## Настройка (бесплатный Google аккаунт)
 
-В репозитории есть `render.yaml` для создания сервиса:
+### 1. Создать Apps Script
+1. Открой https://script.google.com/ и создай новый проект.
+2. Скопируй содержимое файла `Code.gs` из этого репозитория в редактор Apps Script вместо шаблона.
+3. Открой **Project Settings → Script Properties → Add script property** и добавь:
+   - `BOT_TOKEN` = токен от `@BotFather` (секретный).
+   - `ADMIN_PIN` = придумай новый PIN администратора.
+   - `MINI_APP_URL` = HTTPS адрес опубликованного Mini App (шаг 3).
+   - `WEB_APP_URL` = URL Apps Script Web App после деплоя (шаг 2).
+4. В редакторе выбери функцию `setup` и нажми Run. Разреши доступ. Скрипт создаст Google Spreadsheet и триггер напоминаний. Таблица будет привязана к Script Properties автоматически.
 
-1. Открой https://render.com/ и войди через GitHub.
-2. Нажми **New → Blueprint** и выбери репозиторий `allinganyt/mgh`.
-3. Render прочитает `render.yaml` и создаст веб-сервис. Подтверди создание.
-4. В переменные окружения сервиса добавь:
-   - `BOT_TOKEN` — токен от `@BotFather` (секрет, никому не показывай).
-   - `ADMIN_PIN` — новый секретный PIN администратора.
-5. Дождись статуса **Live**. Проверь адрес сервиса: `https://ТВОЙ-СЕРВИС.onrender.com/health` должен вернуть JSON `{"ok":true,"service":"MGH"}`.
-6. Скопируй базовый HTTPS-адрес сервиса. В `bot.py` Render автоматически использует `RENDER_EXTERNAL_URL` как адрес Mini App.
-7. В Telegram открой бота и отправь `/start`. Кнопка MGH откроет приложение.
+### 2. Опубликовать backend
+1. **Deploy → New deployment → Web app**.
+2. Execute as: **Me**. Who has access: **Anyone**.
+3. Нажми Deploy и скопируй URL, оканчивающийся на `/exec`.
+4. В Script Properties установи `WEB_APP_URL` равным этому URL.
+5. Открой редактор, выбери `configureTelegram` и нажми Run. Это установит Telegram webhook. Проверить backend можно по адресу `ТВОЙ_URL/exec?action=health`.
 
-В BotFather можно дополнительно настроить Menu Button: `/mybots → твой бот → Bot Settings → Menu Button`, затем указать тот же HTTPS-адрес. Для работы самого бота webhook не нужен: он использует long polling.
+Если изменяешь Code.gs после публикации, открой **Deploy → Manage deployments → Edit → New version → Deploy**.
 
-Render Blueprint создаёт постоянный диск для SQLite. Это важно, чтобы записи не пропадали при перезапуске сервиса.
+### 3. Опубликовать Mini App
+1. В GitHub открой **Settings → Pages** репозитория `allinganyt/mgh`.
+2. В разделе Build and deployment выбери **Deploy from a branch**, branch `main`, folder `/ (root)`, Save.
+3. Дождись публикации страницы. Адрес будет вида `https://allinganyt.github.io/mgh/`.
+4. В `index.html` замени `ВСТАВЬТЕ_URL_WEB_APP_GOOGLE_APPS_SCRIPT` в переменной `GAS_API_URL` на URL Apps Script `/exec`. Закоммить изменение в main.
+5. В Script Properties установи `MINI_APP_URL` в опубликованный GitHub Pages URL.
+6. Снова запусти `configureTelegram`, чтобы бот присылал кнопку открытия Mini App с актуальным адресом.
 
-## Локальный запуск
+В BotFather можно также настроить Menu Button: `/mybots → ваш бот → Bot Settings → Menu Button`, URL Mini App — GitHub Pages URL.
 
-Нужен Python 3.9+ и постоянно работающий сервер с публичным HTTPS-адресом.
+## Проверка
 
-1. Установи зависимости: `pip install -r requirements.txt`.
-2. Создай бота через `@BotFather` и задай переменные окружения:
-   - `BOT_TOKEN` — токен бота (не публикуй его и не отправляй в чат).
-   - `WEBAPP_URL` — публичный HTTPS URL этого приложения.
-   - `APP_TIMEZONE` — часовой пояс расписания, по умолчанию `Europe/Paris`.
-   - `ADMIN_PIN` — PIN администратора; обязательно замени значение по умолчанию.
-3. Запусти `python bot.py`. Сервер слушает порт `8000`, бот работает через long polling.
-4. В Telegram открой бота и нажми `/start` **до записи на приём**, чтобы бот мог написать пользователю.
-5. В `index.html` оставь `API_BASE = ""`, если Mini App открывается с того же сервера, который запускает `bot.py`.
+- Открой `https://ТВОЙ_APPS_SCRIPT_URL/exec?action=health` — ожидается `{"ok":true,"service":"MGH Apps Script"}`.
+- Напиши боту `/start); после этого Telegram chat ID пользователя сохранится.
+- Открой Mini App, создай тестовую запись на будущее время.
+- Проверь, что строка появилась на листе `appointments`, а подтверждение пришло в Telegram.
+- Триггер `sendDueReminders` проверяет наступившие записи раз в минуту и помечает отправленные в таблице.
 
-## Важно
+## Важные ограничения
 
-Сервер должен работать постоянно: если процесс остановлен или хостинг «засыпает», сообщения о наступившем приёме не отправятся вовремя. Время из списка «Сегодня/Завтра» интерпретируется в часовом поясе `APP_TIMEZONE`. Запись на уже прошедшее время отклоняется.
+- Бесплатный Apps Script имеет квоты Google и может задерживать триггер; напоминание не гарантируется секунда-в-секунду.
+- Google Sheets хранит данные постоянно, пока не удалишь таблицу/проект. Не удаляй Spreadsheet, указанный в Script Properties.
+- Telegram не позволяет боту первым писать пользователю: пациент и врач должны хотя бы раз открыть бота и нажать `/start`.
+- Текущие старые данные из SQLite автоматически не мигрируются. Если там уже есть важные записи, их нужно экспортировать и отдельно перенести.
+- В текущем интерфейсе для записи используется Telegram username. Для стабильной идентификации пользователь должен иметь username и запускать бота до записи.
+- Не публикуй BOT_TOKEN и ADMIN_PIN в GitHub или в сообщениях.
