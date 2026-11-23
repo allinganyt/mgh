@@ -479,8 +479,7 @@ ass="field"><label for="appExp">Опыт / стаж</label><input type="text" id
           var d = state.doctors[b];
           hh += '<div class="doc-item"><div class="doc-top"><div class="doc-name">' + esc(d.name) + '</div><span class="pill ' + (docActive(d) ? "active" : "off") + '">' + (docActive(d) ? "Активен" : "Отключён") + '</span></div>'
             + '<div class="doc-meta">' + esc(d.role) + " • TG: <b>" + fmtUsername(d.username) + "</b></div>"
-            + '<div class="
-row-actions"><button class="btn btn-ghost" onclick="toggleDoctor(' + d.id + ')" style="width:auto;">' + (docActive(d) ? "Отключить" : "Включить") + "</button></div></div>";
+            + '<div class="row-actions"><button class="btn btn-ghost" onclick="toggleDoctor(' + d.id + ')" style="width:auto;">' + (docActive(d) ? "Отключить" : "Включить") + "</button></div></div>";
         }
         adminList.innerHTML = hh;
       }
