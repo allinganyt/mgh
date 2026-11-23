@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: mgh-telegram-bot
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    healthCheckPath: /health
+    disk:
+      name: mgh-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: APP_TIMEZONE
+        value: Europe/Paris
+      - key: DB_PATH
+        value: /var/data/mgh_light.db
+      - key: ADMIN_PIN
+        sync: false
