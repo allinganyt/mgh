@@ -1,5 +1,8 @@
 import asyncio
+import os
 import time
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 import aiosqlite
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,9 +13,10 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message, WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 import uvicorn
 
-BOT_TOKEN = "ВСТАВЬ_ТОКЕН_ОТ_BOTFATHER"
-WEBAPP_URL = "https://ТВОЙ_HTTPS_АДРЕС.ngrok-free.app"
-ADMIN_PIN = "05061488"
+BOT_TOKEN = os.getenv("BOT_TOKEN", "ВСТАВЬ_ТОКЕН_ОТ_BOTFATHER")
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://ТВОЙ_HTTPS_АДРЕС.ngrok-free.app")
+ADMIN_PIN = os.getenv("ADMIN_PIN", "05061488")
+APP_TIMEZONE = ZoneInfo(os.getenv("APP_TIMEZONE", "Europe/Paris"))
 COOLDOWN_SECONDS = 15
 DB_PATH = "mgh_light.db"
 
@@ -32,6 +36,25 @@ user_cooldowns: dict[int, float] = {}
 
 def norm_user(u: str) -> str:
     return (u or "").strip().lstrip("@").lower()
+
+
+def resolve_appointment_time(value: str) -> datetime:
+    """Преобразует варианты «Сегодня, 14:00» / «Завтра, 11:00» в дату с часовым поясом больницы."""
+    try:
+        day_label, clock = [part.strip() for part in value.split(",", 1)]
+        hour, minute = [int(part) for part in clock.split(":", 1)]
+    except (ValueError, AttributeError):
+        raise HTTPException(status_code=400, detail="Некорректное время приёма")
+
+    if day_label not in {"Сегодня", "Завтра"} or not (0 <= hour <= 23 and 0 <= minute <= 59):
+        raise HTTPException(status_code=400, detail="Некорректное время приёма")
+
+    local_now = datetime.now(APP_TIMEZONE)
+    day = local_now.date() if day_label == "Сегодня" else local_now.date().fromordinal(local_now.date().toordinal() + 1)
+    appointment = datetime(day.year, day.month, day.day, hour, minute, tzinfo=APP_TIMEZONE)
+    if appointment <= local_now:
+        raise HTTPException(status_code=400, detail="Это время уже прошло. Выберите следующий доступный приём.")
+    return appointment
 
 class AppointmentCreate(BaseModel):
     sender_key: str
@@ -92,6 +115,8 @@ async def init_db():
                 doctor_username TEXT,
                 time_slot TEXT,
                 complaints TEXT,
+                appointment_at TEXT,
+                reminded_at TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
@@ -105,6 +130,14 @@ async def init_db():
                 about TEXT
             )
         """)
+        # Миграция для уже существующей базы данных.
+        cur = await db.execute("PRAGMA table_info(appointments)")
+        appointment_columns = {row[1] for row in await cur.fetchall()}
+        if "appointment_at" not in appointment_columns:
+            await db.execute("ALTER TABLE appointments ADD COLUMN appointment_at TEXT")
+        if "reminded_at" not in appointment_columns:
+            await db.execute("ALTER TABLE appointments ADD COLUMN reminded_at TEXT")
+
         cur = await db.execute("SELECT COUNT(*) FROM doctors")
         if (await cur.fetchone())[0] == 0:
             await db.executemany(
@@ -165,6 +198,9 @@ async def create_appointment(data: AppointmentCreate):
     if not p_uname:
         raise HTTPException(status_code=400, detail="Укажите ваш @username в Telegram")
 
+    appointment_local = resolve_appointment_time(data.time_slot)
+    appointment_utc = appointment_local.astimezone(timezone.utc).isoformat(timespec="seconds")
+
     key = data.sender_key or p_uname
     now = time.time()
     last = user_cooldowns.get(key, 0)
@@ -183,8 +219,8 @@ async def create_appointment(data: AppointmentCreate):
         d_row = await (await db.execute("SELECT chat_id FROM tg_users WHERE username = ?", (d_uname,))).fetchone()
 
         await db.execute(
-            "INSERT INTO appointments (patient_username, patient_name, doctor_id, doctor_name, doctor_username, time_slot, complaints) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (p_uname, data.patient_name, doc["id"], doc["name"], d_uname, data.time_slot, data.complaints)
+            "INSERT INTO appointments (patient_username, patient_name, doctor_id, doctor_name, doctor_username, time_slot, complaints, appointment_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (p_uname, data.patient_name, doc["id"], doc["name"], d_uname, data.time_slot, data.complaints, appointment_utc)
         )
         await db.commit()
 
@@ -199,7 +235,7 @@ async def create_appointment(data: AppointmentCreate):
                 chat_id=patient_chat_id,
                 text=(
                     f"🏥 **Miami General Hospital (MGH)**\n"
-                    f"Напоминание о записи на приём:\n\n"
+                    f"✅ Вы успешно записаны на приём!\n\n"
                     f"👨‍⚕️ **Врач:** {doc['name']} (`@{d_uname}`)\n"
                     f"🕒 **Время:** {data.time_slot}\n"
                     f"📝 **Причина:** {data.complaints or 'Плановый осмотр'}"
@@ -292,10 +328,56 @@ async def review_app(data: ReviewApp):
             await db.commit()
     return {"ok": True}
 
+async def reminder_loop():
+    """Проверяет наступившие приёмы и отправляет пациенту одно Telegram-напоминание."""
+    while True:
+        now_utc = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        async with aiosqlite.connect(DB_PATH) as db:
+            db.row_factory = aiosqlite.Row
+            rows = await (await db.execute(
+                """SELECT a.id, a.patient_username, a.patient_name, a.doctor_name,
+                          a.time_slot, a.complaints, u.chat_id
+                   FROM appointments a
+                   LEFT JOIN tg_users u ON u.username = a.patient_username
+                   WHERE a.appointment_at IS NOT NULL
+                     AND a.appointment_at <= ?
+                     AND a.reminded_at IS NULL
+                   ORDER BY a.appointment_at ASC""",
+                (now_utc,)
+            )).fetchall()
+
+            for row in rows:
+                if not row["chat_id"]:
+                    # Пользователь ещё не нажал /start. Оставляем напоминание ожидающим.
+                    continue
+                try:
+                    await bot.send_message(
+                        chat_id=row["chat_id"],
+                        text=(
+                            "⏰ **MGH — время вашего приёма!**\\n\\n"
+                            f"👨‍⚕️ **Врач:** {row['doctor_name']}\\n"
+                            f"🕒 **Время:** {row['time_slot']}\\n"
+                            f"📝 **Причина:** {row['complaints'] or 'Плановый осмотр'}\\n\\n"
+                            "Пожалуйста, не опаздывайте."
+                        ),
+                        parse_mode="Markdown"
+                    )
+                except Exception as e:
+                    print(f"Не удалось отправить напоминание по записи #{row['id']}: {e}")
+                    continue
+
+                await db.execute(
+                    "UPDATE appointments SET reminded_at = ? WHERE id = ? AND reminded_at IS NULL",
+                    (now_utc, row["id"])
+                )
+            await db.commit()
+        await asyncio.sleep(10)
+
+
 async def main():
     await init_db()
     server = uvicorn.Server(uvicorn.Config(app, host="0.0.0.0", port=8000, log_level="info"))
-    await asyncio.gather(server.serve(), dp.start_polling(bot))
+    await asyncio.gather(server.serve(), dp.start_polling(bot), reminder_loop())
 
 if __name__ == "__main__":
     asyncio.run(main())
