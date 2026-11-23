@@ -12,69 +12,374 @@
       --purple: #7c5cff;
       --grad: linear-gradient(135deg, #3b82f6 0%, #7c5cff 100%);
       --grad-soft: linear-gradient(135deg, rgba(59,130,246,0.14), rgba(124,92,255,0.14));
-      --ok-bg: rgba(16,185,129,0.14); --ok-txt: #047857;
-      --warn-bg: rgba(245,158,11,0.16); --warn-txt: #b45309;
-      --err-bg: rgba(239,68,68,0.14); --err-txt: #b91c1c;
+      --ok-bg: rgba(16,185,129,0.14);
+      --ok-txt: #047857;
+      --warn-bg: rgba(245,158,11,0.16);
+      --warn-txt: #b45309;
+      --err-bg: rgba(239,68,68,0.14);
+      --err-txt: #b91c1c;
     }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     html, body {
-      margin: 0; padding: 0; min-height: 100%;
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
       color: var(--text);
-      background: radial-gradient(circle at 12% 10%, rgba(96,165,250,0.36), transparent 45%),
+      background:
+        radial-gradient(circle at 12% 10%, rgba(96,165,250,0.36), transparent 45%),
         radial-gradient(circle at 88% 14%, rgba(167,139,250,0.36), transparent 45%),
         radial-gradient(circle at 50% 92%, rgba(125,211,252,0.32), transparent 50%),
         linear-gradient(160deg, #eef4ff 0%, #e6e8ff 52%, #f3eaff 100%);
       background-attachment: fixed;
     }
-    .app { max-width: 540px; margin: 0 auto; padding: 14px 14px 96px; }
-    .glass { background: rgba(255,255,255,0.62); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.88); box-shadow: 0 10px 28px rgba(86,108,196,0.12), inset 0 1px 0 rgba(255,255,255,0.9); border-radius: 22px; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; margin-bottom: 12px; }
-    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
-    .logo { width: 42px; height: 42px; border-radius: 14px; background: var(--grad); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 14px; flex-shrink: 0; box-shadow: 0 6px 16px rgba(92,108,235,0.3); }
-    .brand-title { font-size: 15px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .brand-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .role-btn { border: 1px solid rgba(124,92,255,0.28); background: rgba(255,255,255,0.82); color: var(--text); padding: 8px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
-    .role-btn:active { transform: scale(0.96); }
-    .role-btn.admin-on { background: var(--grad); color: #fff; border-color: transparent; }
-    .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 5px; margin-bottom: 14px; }
-    .tabs.has-admin { grid-template-columns: repeat(4, 1fr); }
-    .tab-btn { border: none; background: transparent; color: var(--muted); font-weight: 600; font-size: 12.5px; padding: 9px 6px; border-radius: 16px; cursor: pointer; }
-    .tab-btn.active { background: rgba(255,255,255,0.82); color: var(--text); font-weight: 700; box-shadow: 0 4px 12px rgba(79,99,194,0.12); }
-    .section { display: none; }
-    .section.active { display: block; }
-    .card { padding: 15px; margin-bottom: 12px; }
-    .card-title { font-size: 15px; font-weight: 700; margin: 0 0 4px; }
-    .card-desc { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; line-height: 1.4; }
-    .field { margin-bottom: 11px; }
-    label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
-    input, select, textarea { width: 100%; padding: 11px 13px; border-radius: 14px; border: 1px solid rgba(110,128,210,0.25); background: rgba(255,255,255,0.78); color: var(--text); font-size: 14px; font-family: inherit; outline: none; }
-    input:focus, select:focus, textarea:focus { border-color: var(--purple); background: #fff; }
-    textarea { min-height: 72px; resize: vertical; }
-    .btn { width: 100%; border: none; border-radius: 15px; padding: 12px 14px; font-size: 14px; font-weight: 700; cursor: pointer; color: #fff; background: var(--grad); box-shadow: 0 8px 20px rgba(92,108,235,0.26); }
-    .btn:active:not(:disabled) { transform: scale(0.98); }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-ghost { background: var(--grad-soft); color: var(--text); box-shadow: none; border: 1px solid rgba(124,92,255,0.2); padding: 8px 11px; font-size: 12px; width: auto; border-radius: 12px; }
-    .btn-danger { background: var(--err-bg); color: var(--err-txt); box-shadow: none; padding: 8px 11px; font-size: 12px; width: auto; border-radius: 12px; }
-    .btn-ok { background: var(--ok-bg); color: var(--ok-txt); box-shadow: none; padding: 8px 11px; font-size: 12px; width: auto; border-radius: 12px; }
-    .doc-item, .log-item, .app-item { padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.56); border: 1px solid rgba(255,255,255,0.8); margin-bottom: 9px; }
-    .doc-top, .log-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .doc-name { font-weight: 700; font-size: 14px; }
-    .doc-meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
-    .pill { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
-    .pill.active { background: var(--ok-bg); color: var(--ok-txt); }
-    .pill.off { background: var(--err-bg); color: var(--err-txt); }
-    .pill.info { background: var(--grad-soft); color: var(--purple); }
-    .row-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-    .notice { padding: 10px 12px; border-radius: 14px; font-size: 12.5px; margin-top: 10px; line-height: 1.4; display: none; }
-    .notice.show { display: block; }
-    .notice.ok { background: var(--ok-bg); color: var(--ok-txt); }
-    .notice.err { background: var(--err-bg); color: var(--err-txt); }
-    .notice.warn { background: var(--warn-bg); color: var(--warn-txt); }
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(24,32,58,0.35); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
-    .modal-backdrop.open { display: flex; }
-    .modal { width: 100%; max-width: 380px; padding: 18px; background: rgba(255,255,255,0.9); border-radius: 22px; border: 1px solid #fff; box-shadow: 0 20px 40px rgba(32,46,98,0.22); }
-    .empty { text-align: center; color: var(--muted); font-size: 13px; padding: 16px 8px; }
+
+    .app {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 14px 14px 96px;
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.62);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.88);
+      box-shadow: 0 10px 28px rgba(86,108,196,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+      border-radius: 22px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--grad);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 6px 16px rgba(92,108,235,0.3);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .role-btn {
+      border: 1px solid rgba(124,92,255,0.28);
+      background: rgba(255,255,255,0.82);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .role-btn:active {
+      transform: scale(0.96);
+    }
+
+    .role-btn.admin-on {
+      background: var(--grad);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 5px;
+      margin-bottom: 14px;
+    }
+
+    .tabs.has-admin {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 12.5px;
+      padding: 9px 6px;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: rgba(255,255,255,0.82);
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(79,99,194,0.12);
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .card {
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 12px;
+      line-height: 1.4;
+    }
+
+    .field {
+      margin-bottom: 11px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 14px;
+      border: 1px solid rgba(110,128,210,0.25);
+      background: rgba(255,255,255,0.78);
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--purple);
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 72px;
+      resize: vertical;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 15px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      background: var(--grad);
+      box-shadow: 0 8px 20px rgba(92,108,235,0.26);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-ghost {
+      background: var(--grad-soft);
+      color: var(--text);
+      box-shadow: none;
+      border: 1px solid rgba(124,92,255,0.2);
+      padding: 8px 11px;
+      font-size: 12px;
+      width: auto;
+      border-radius: 12px;
+    }
+
+    .btn-danger {
+      background: var(--err-bg);
+      color: var(--err-txt);
+      box-shadow: none;
+      padding: 8px 11px;
+      font-size: 12px;
+      width: auto;
+      border-radius: 12px;
+    }
+
+    .btn-ok {
+      background: var(--ok-bg);
+      color: var(--ok-txt);
+      box-shadow: none;
+      padding: 8px 11px;
+      font-size: 12px;
+      width: auto;
+      border-radius: 12px;
+    }
+
+    .doc-item, .log-item, .app-item {
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.56);
+      border: 1px solid rgba(255,255,255,0.8);
+      margin-bottom: 9px;
+    }
+
+    .doc-top, .log-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .doc-name {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .doc-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .pill.active {
+      background: var(--ok-bg);
+      color: var(--ok-txt);
+    }
+
+    .pill.off {
+      background: var(--err-bg);
+      color: var(--err-txt);
+    }
+
+    .pill.info {
+      background: var(--grad-soft);
+      color: var(--purple);
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .notice {
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 12.5px;
+      margin-top: 10px;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .notice.show {
+      display: block;
+    }
+
+    .notice.ok {
+      background: var(--ok-bg);
+      color: var(--ok-txt);
+    }
+
+    .notice.err {
+      background: var(--err-bg);
+      color: var(--err-txt);
+    }
+
+    .notice.warn {
+      background: var(--warn-bg);
+      color: var(--warn-txt);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(24,32,58,0.35);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 380px;
+      padding: 18px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 22px;
+      border: 1px solid #fff;
+      box-shadow: 0 20px 40px rgba(32,46,98,0.22);
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 16px 8px;
+    }
   </style>
 </head>
 <body>
@@ -101,10 +406,20 @@
       <div class="glass card">
         <h2 class="card-title">Запись на приём в MGH</h2>
         <p class="card-desc">Укажите ваш <b>@username</b> в Telegram (и запустите бота, чтобы получать напоминания). Кулдаун &mdash; <b>15 сек</b>.</p>
-        <div class="field"><label for="patientUsername">Ваш @username в Telegram *</label><input type="text" id="patientUsername" placeholder="@username" autocomplete="off" /></div>
-        <div class="field"><label for="patientName">Ваше имя</label><input type="text" id="patientName" placeholder="Например: Алексей" /></div>
-        <div class="field"><label for="doctorSelect">Врач (только активный штат)</label><select id="doctorSelect"></select></div>
-        <div class="field"><label for="timeSlot">Время приёма</label>
+        <div class="field">
+          <label for="patientUsername">Ваш @username в Telegram *</label>
+          <input type="text" id="patientUsername" placeholder="@username" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="patientName">Ваше имя</label>
+          <input type="text" id="patientName" placeholder="Например: Алексей" />
+        </div>
+        <div class="field">
+          <label for="doctorSelect">Врач (только активный штат)</label>
+          <select id="doctorSelect"></select>
+        </div>
+        <div class="field">
+          <label for="timeSlot">Время приёма</label>
           <select id="timeSlot">
             <option value="Сегодня, 14:00">Сегодня, 14:00</option>
             <option value="Сегодня, 15:30">Сегодня, 15:30</option>
@@ -113,10 +428,14 @@
             <option value="Завтра, 16:00">Завтра, 16:00</option>
           </select>
         </div>
-        <div class="field"><label for="complaints">Жалобы или цель визита</label><textarea id="complaints" placeholder="Кратко опишите, что беспокоит..."></textarea></div>
+        <div class="field">
+          <label for="complaints">Жалобы или цель визита</label>
+          <textarea id="complaints" placeholder="Кратко опишите, что беспокоит..."></textarea>
+        </div>
         <button class="btn" id="bookBtn" onclick="submitAppointment()">Записаться на приём</button>
         <div class="notice" id="bookNotice"></div>
       </div>
+
       <div class="glass card">
         <h3 class="card-title">Активные врачи сейчас</h3>
         <p class="card-desc">Список формируется главным врачом MGH.</p>
@@ -128,11 +447,26 @@
       <div class="glass card">
         <h2 class="card-title">Анкета в штат MGH</h2>
         <p class="card-desc">Заполните анкету &mdash; администратор проверит её и сможет добавить вас в список врачей.</p>
-        <div class="field"><label for="appUsername">Ваш @username в Telegram *</label><input type="text" id="appUsername" placeholder="@doctor_tg" /></div>
-        <div class="field"><label for="appName">Имя и фамилия (или ник) *</label><input type="text" id="appName" placeholder="Д-р Кейтлин Сноу" /></div>
-        <div class="field"><label for="appRole">Желаемая должность / отделение *</label><input type="text" id="appRole" placeholder="Например: Хирург" /></div>
-        <div class="field"><label for="appExp">Опыт / стаж</label><input type="text" id="appExp" placeholder="Например: 3 года практики" /></div>
-        <div class="field"><label for="appAbout">О себе и график</label><textarea id="appAbout" placeholder="Когда обычно в сети, почему хотите в MGH..."></textarea></div>
+        <div class="field">
+          <label for="appUsername">Ваш @username в Telegram *</label>
+          <input type="text" id="appUsername" placeholder="@doctor_tg" />
+        </div>
+        <div class="field">
+          <label for="appName">Имя и фамилия (или ник) *</label>
+          <input type="text" id="appName" placeholder="Д-р Кейтлин Сноу" />
+        </div>
+        <div class="field">
+          <label for="appRole">Желаемая должность / отделение *</label>
+          <input type="text" id="appRole" placeholder="Например: Хирург" />
+        </div>
+        <div class="field">
+          <label for="appExp">Опыт / стаж</label>
+          <input type="text" id="appExp" placeholder="Например: 3 года практики" />
+        </div>
+        <div class="field">
+          <label for="appAbout">О себе и график</label>
+          <textarea id="appAbout" placeholder="Когда обычно в сети, почему хотите в MGH..."></textarea>
+        </div>
         <button class="btn" onclick="submitApplication()">Отправить анкету</button>
         <div class="notice" id="appNotice"></div>
       </div>
@@ -155,17 +489,28 @@
       <div class="glass card">
         <h2 class="card-title">Добавить врача в MGH</h2>
         <p class="card-desc">Укажите @username врача &mdash; бот будет отправлять ему уведомление о новом пациенте.</p>
-        <div class="field"><label for="newDocName">Имя врача *</label><input type="text" id="newDocName" placeholder="Д-р Майкл Харрис" /></div>
-        <div class="field"><label for="newDocRole">Специализация *</label><input type="text" id="newDocRole" placeholder="Кардиолог" /></div>
-        <div class="field"><label for="newDocUser">@username врача в Telegram *</label><input type="text" id="newDocUser" placeholder="@harris_mgh" /></div>
+        <div class="field">
+          <label for="newDocName">Имя врача *</label>
+          <input type="text" id="newDocName" placeholder="Д-р Майкл Харрис" />
+        </div>
+        <div class="field">
+          <label for="newDocRole">Специализация *</label>
+          <input type="text" id="newDocRole" placeholder="Кардиолог" />
+        </div>
+        <div class="field">
+          <label for="newDocUser">@username врача в Telegram *</label>
+          <input type="text" id="newDocUser" placeholder="@harris_mgh" />
+        </div>
         <button class="btn" onclick="addDoctor()">Добавить врача</button>
         <div class="notice" id="adminNotice"></div>
       </div>
+
       <div class="glass card">
         <h3 class="card-title">Управление доступными врачами</h3>
         <p class="card-desc">Включайте или отключайте врачей &mdash; неактивные пропадают из записи.</p>
         <div id="adminDoctorsList"></div>
       </div>
+
       <div class="glass card">
         <h3 class="card-title">Входящие анкеты на работу</h3>
         <div id="adminAppsList"></div>
@@ -177,7 +522,10 @@
     <div class="modal">
       <h3 class="card-title">Вход для администратора MGH</h3>
       <p class="card-desc">Введите код доступа, чтобы открыть панель управления врачами и анкетами.</p>
-      <div class="field"><label for="pinInput">Код доступа</label><input type="password" id="pinInput" inputmode="numeric" placeholder="Введите код" /></div>
+      <div class="field">
+        <label for="pinInput">Код доступа</label>
+        <input type="password" id="pinInput" inputmode="numeric" placeholder="Введите код" />
+      </div>
       <div class="row-actions">
         <button class="btn" style="flex:1;" onclick="verifyPin()">Войти</button>
         <button class="btn btn-ghost" onclick="closePinModal()">Отмена</button>
@@ -192,13 +540,22 @@
     var STORAGE_KEY = "mgh_web_state_v1";
 
     // ====== НАСТРОЙКА: адрес сервера bot.py (HTTPS), например ngrok ======
-    var API_BASE = "https://ZAMENI_NA_ADRES_SERVERA.ngrok-free.app";
+    var API_BASE = "";
 
     var tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-    if (tg) { tg.ready(); tg.expand(); }
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
 
-    function normUsername(val) { return (val || "").trim().replace(/^@+/, "").toLowerCase(); }
-    function fmtUsername(val) { var c = normUsername(val); return c ? "@" + c : "не указан"; }
+    function normUsername(val) {
+      return (val || "").trim().replace(/^@+/, "").toLowerCase();
+    }
+
+    function fmtUsername(val) {
+      var c = normUsername(val);
+      return c ? "@" + c : "не указан";
+    }
 
     function getAccountKey() {
       var tgUser = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
@@ -228,17 +585,39 @@
           cooldownLeft: 0
         };
       } catch (e) {
-        return { isAdmin: false, doctors: JSON.parse(JSON.stringify(defaultDoctors)), applications: [], alerts: [], cooldowns: {}, cooldownLeft: 0 };
+        return {
+          isAdmin: false,
+          doctors: JSON.parse(JSON.stringify(defaultDoctors)),
+          applications: [],
+          alerts: [],
+          cooldowns: {},
+          cooldownLeft: 0
+        };
       }
     }
 
     var state = localState();
     var serverOnline = false;
 
-    function docActive(d) { return d.active === undefined ? !!d.is_active : !!d.active; }
-    function mapServerDoc(d) { return { id: d.id, name: d.name, role: d.role, username: d.username, tg_id: d.tg_id || 0, active: !!d.is_active }; }
+    function docActive(d) {
+      return d.active === undefined ? !!d.is_active : !!d.active;
+    }
+
+    function mapServerDoc(d) {
+      return {
+        id: d.id,
+        name: d.name,
+        role: d.role,
+        username: d.username,
+        tg_id: d.tg_id || 0,
+        active: !!d.is_active
+      };
+    }
 
     function apiFetch(path, options) {
+      if (!API_BASE) {
+        return Promise.reject(new Error("API_BASE не задан"));
+      }
       var opts = options || {};
       return fetch(API_BASE + path, {
         method: opts.method || "GET",
@@ -253,22 +632,42 @@
     }
 
     function loadState() {
+      if (!API_BASE) {
+        serverOnline = false;
+        return Promise.resolve();
+      }
       var key = getAccountKey();
       return apiFetch("/api/state?sender_key=" + encodeURIComponent(key)).then(function (data) {
         serverOnline = true;
         state.doctors = (data.doctors || []).map(mapServerDoc);
         state.applications = (data.applications || []).map(function (a) {
-          return { id: a.id, username: a.applicant_username, name: a.name, role: a.role, experience: a.experience, about: a.about };
+          return {
+            id: a.id,
+            username: a.applicant_username,
+            name: a.name,
+            role: a.role,
+            experience: a.experience,
+            about: a.about
+          };
         });
         state.appointments = data.appointments || [];
         state.cooldownLeft = data.cooldown_left || 0;
         saveState();
-      }).catch(function () { serverOnline = false; state = localState(); });
+      }).catch(function () {
+        serverOnline = false;
+        state = localState();
+      });
     }
 
     function saveState() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ isAdmin: state.isAdmin, doctors: state.doctors, applications: state.applications, alerts: state.alerts, cooldowns: state.cooldowns }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          isAdmin: state.isAdmin,
+          doctors: state.doctors,
+          applications: state.applications,
+          alerts: state.alerts,
+          cooldowns: state.cooldowns
+        }));
       } catch (e) {}
     }
 
@@ -283,44 +682,73 @@
     function showNotice(id, text, type) {
       var el = document.getElementById(id);
       if (!el) return;
-      el.textContent = text; el.className = "notice show " + (type || "ok");
+      el.textContent = text;
+      el.className = "notice show " + (type || "ok");
     }
+
     function hideNotice(id) {
       var el = document.getElementById(id);
       if (!el) return;
-      el.className = "notice"; el.textContent = "";
+      el.className = "notice";
+      el.textContent = "";
     }
 
     function switchTab(tabName) {
-      if (tabName === "admin" && !state.isAdmin) { openPinModal(); return; }
+      if (tabName === "admin" && !state.isAdmin) {
+        openPinModal();
+        return;
+      }
       var btns = document.querySelectorAll(".tab-btn");
-      for (var i = 0; i < btns.length; i++) btns[i].classList.toggle("active", btns[i].dataset.tab === tabName);
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle("active", btns[i].dataset.tab === tabName);
+      }
       var secs = document.querySelectorAll(".section");
-      for (var j = 0; j < secs.length; j++) secs[j].classList.toggle("active", secs[j].id === "tab-" + tabName);
-      if (serverOnline) loadState().then(renderAll); else renderAll();
+      for (var j = 0; j < secs.length; j++) {
+        secs[j].classList.toggle("active", secs[j].id === "tab-" + tabName);
+      }
+      if (serverOnline) {
+        loadState().then(renderAll);
+      } else {
+        renderAll();
+      }
     }
 
     function onRoleClick() {
       if (state.isAdmin) {
-        state.isAdmin = false; saveState();
+        state.isAdmin = false;
+        saveState();
         var active = document.querySelector(".tab-btn.active");
         if (active && active.dataset.tab === "admin") switchTab("book");
         renderAll();
-      } else { openPinModal(); }
+      } else {
+        openPinModal();
+      }
     }
 
     function openPinModal() {
       hideNotice("pinNotice");
       document.getElementById("pinInput").value = "";
       document.getElementById("pinModal").classList.add("open");
-      setTimeout(function () { document.getElementById("pinInput").focus(); }, 50);
+      setTimeout(function () {
+        document.getElementById("pinInput").focus();
+      }, 50);
     }
-    function closePinModal() { document.getElementById("pinModal").classList.remove("open"); }
+
+    function closePinModal() {
+      document.getElementById("pinModal").classList.remove("open");
+    }
 
     function verifyPin() {
       var code = (document.getElementById("pinInput").value || "").trim();
-      if (code === ADMIN_CODE) { state.isAdmin = true; saveState(); closePinModal(); renderAll(); switchTab("admin"); }
-      else { showNotice("pinNotice", "Неверный код доступа.", "err"); }
+      if (code === ADMIN_CODE) {
+        state.isAdmin = true;
+        saveState();
+        closePinModal();
+        renderAll();
+        switchTab("admin");
+      } else {
+        showNotice("pinNotice", "Неверный код доступа.", "err");
+      }
     }
 
     function getCooldownLeft() {
@@ -334,39 +762,84 @@
       var left = getCooldownLeft();
       var btn = document.getElementById("bookBtn");
       if (!btn) return;
-      if (left > 0) { btn.disabled = true; btn.textContent = "Подождите " + left + " сек. (кулдаун)"; }
-      else { btn.disabled = false; btn.textContent = "Записаться на приём"; }
+      if (left > 0) {
+        btn.disabled = true;
+        btn.textContent = "Подождите " + left + " сек. (кулдаун)";
+      } else {
+        btn.disabled = false;
+        btn.textContent = "Записаться на приём";
+      }
     }
 
     function submitAppointment() {
       hideNotice("bookNotice");
+      var left = getCooldownLeft();
+      if (left > 0) {
+        showNotice("bookNotice", "Подождите " + left + " сек. перед следующей записью.", "warn");
+        return;
+      }
+
       var pUser = normUsername(document.getElementById("patientUsername").value);
-      if (!pUser) { showNotice("bookNotice", "Укажите ваш @username в Telegram.", "err"); return; }
+      if (!pUser) {
+        showNotice("bookNotice", "Укажите ваш @username в Telegram.", "err");
+        return;
+      }
+
       var activeDocs = state.doctors.filter(docActive);
       var docId = Number(document.getElementById("doctorSelect").value);
       var doc = null;
-      for (var i = 0; i < activeDocs.length; i++) if (activeDocs[i].id === docId) doc = activeDocs[i];
-      if (!doc) { showNotice("bookNotice", "Сейчас нет доступных активных врачей.", "err"); return; }
+      for (var i = 0; i < activeDocs.length; i++) {
+        if (activeDocs[i].id === docId) doc = activeDocs[i];
+      }
+      if (!doc) {
+        showNotice("bookNotice", "Сейчас нет доступных активных врачей.", "err");
+        return;
+      }
+
       var pName = (document.getElementById("patientName").value || "").trim() || ("@" + pUser);
       var timeSlot = document.getElementById("timeSlot").value;
       var complaints = (document.getElementById("complaints").value || "").trim() || "Плановый осмотр";
 
       if (serverOnline) {
-        apiFetch("/api/appointments", { method: "POST", body: JSON.stringify({ sender_key: getAccountKey(), patient_username: pUser, patient_name: pName, doctor_id: doc.id, time_slot: timeSlot, complaints: complaints }) })
+        apiFetch("/api/appointments", {
+          method: "POST",
+          body: JSON.stringify({
+            sender_key: getAccountKey(),
+            patient_username: pUser,
+            patient_name: pName,
+            doctor_id: doc.id,
+            time_slot: timeSlot,
+            complaints: complaints
+          })
+        })
           .then(function () {
             showNotice("bookNotice", "Запись создана! Уведомления отправлены пациенту (" + fmtUsername(pUser) + ") и врачу (" + doc.name + ", " + fmtUsername(doc.username) + ").", "ok");
             loadState().then(renderAll);
           })
-          .catch(function (e) { showNotice("bookNotice", String(e.message || e), "err"); });
+          .catch(function (e) {
+            showNotice("bookNotice", String(e.message || e), "err");
+          });
         return;
       }
 
       state.cooldowns[getAccountKey()] = Date.now();
       var nowTime = new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
-      state.alerts.unshift({ id: Date.now() + Math.random(), time: nowTime, toPatient: fmtUsername(pUser), toDoctor: fmtUsername(doc.username), doctorName: doc.name, doctorRole: doc.role, patientName: pName, timeSlot: timeSlot, complaints: complaints });
+      state.alerts.unshift({
+        id: Date.now() + Math.random(),
+        time: nowTime,
+        toPatient: fmtUsername(pUser),
+        toDoctor: fmtUsername(doc.username),
+        doctorName: doc.name,
+        doctorRole: doc.role,
+        patientName: pName,
+        timeSlot: timeSlot,
+        complaints: complaints
+      });
       if (state.alerts.length > 40) state.alerts.length = 40;
-      saveState(); updateCooldownUI(); renderAlerts();
-      showNotice("bookNotice", "Сервер недоступен: запись сохранена только локально, уведомления не отправлены. Нужно вписать адрес сервера в API_BASE.", "warn");
+      saveState();
+      updateCooldownUI();
+      renderAlerts();
+      showNotice("bookNotice", "Запись оформлена! Напоминание для " + fmtUsername(pUser) + " и уведомление для " + doc.name + " (" + fmtUsername(doc.username) + ") сохранены во вкладке «Уведомления».", "ok");
     }
 
     function submitApplication() {
@@ -376,18 +849,46 @@
       var role = (document.getElementById("appRole").value || "").trim();
       var exp = (document.getElementById("appExp").value || "").trim() || "Не указан";
       var about = (document.getElementById("appAbout").value || "").trim();
-      if (!u || !name || !role) { showNotice("appNotice", "Заполните @username, имя и желаемую должность.", "err"); return; }
-
-      if (serverOnline) {
-        apiFetch("/api/applications", { method: "POST", body: JSON.stringify({ applicant_username: u, name: name, role: role, experience: exp, about: about }) })
-          .then(function () { showNotice("appNotice", "Анкета отправлена в Miami General Hospital на проверку.", "ok"); loadState().then(renderAll); })
-          .catch(function (e) { showNotice("appNotice", String(e.message || e), "err"); });
+      if (!u || !name || !role) {
+        showNotice("appNotice", "Заполните @username, имя и желаемую должность.", "err");
         return;
       }
 
-      state.applications.unshift({ id: Date.now(), username: u, name: name, role: role, experience: exp, about: about });
+      if (serverOnline) {
+        apiFetch("/api/applications", {
+          method: "POST",
+          body: JSON.stringify({
+            applicant_username: u,
+            name: name,
+            role: role,
+            experience: exp,
+            about: about
+          })
+        })
+          .then(function () {
+            showNotice("appNotice", "Анкета отправлена в Miami General Hospital на проверку.", "ok");
+            loadState().then(renderAll);
+          })
+          .catch(function (e) {
+            showNotice("appNotice", String(e.message || e), "err");
+          });
+        return;
+      }
+
+      state.applications.unshift({
+        id: Date.now(),
+        username: u,
+        name: name,
+        role: role,
+        experience: exp,
+        about: about
+      });
       saveState();
-      showNotice("appNotice", "Сервер недоступен: анкета сохранена локально.", "warn");
+      document.getElementById("appName").value = "";
+      document.getElementById("appRole").value = "";
+      document.getElementById("appExp").value = "";
+      document.getElementById("appAbout").value = "";
+      showNotice("appNotice", "Анкета отправлена на проверку администратору.", "ok");
       if (state.isAdmin) renderAdminApps();
     }
 
@@ -397,36 +898,126 @@
       var name = (document.getElementById("newDocName").value || "").trim();
       var role = (document.getElementById("newDocRole").value || "").trim();
       var username = normUsername(document.getElementById("newDocUser").value);
-      if (!name || !role || !username) { showNotice("adminNotice", "Укажите имя врача, специализацию и @username.", "err"); return; }
-      apiFetch("/api/admin/add-doctor", { method: "POST", body: JSON.stringify({ pin: ADMIN_CODE, name: name, role: role, username: username }) })
-        .then(function () {
-          document.getElementById("newDocName").value = "";
-          document.getElementById("newDocRole").value = "";
-          document.getElementById("newDocUser").value = "";
-          showNotice("adminNotice", "Врач " + name + " (" + fmtUsername(username) + ") добавлен в штат.", "ok");
-        
-  loadState().then(renderAll);
+      if (!name || !role || !username) {
+        showNotice("adminNotice", "Укажите имя врача, специализацию и @username.", "err");
+        return;
+      }
+
+      if (serverOnline) {
+        apiFetch("/api/admin/add-doctor", {
+          method: "POST",
+          body: JSON.stringify({ pin: ADMIN_CODE, name: name, role: role, username: username })
         })
-        .catch(function (e) { showNotice("adminNotice", String(e.message || e), "err"); });
+          .then(function () {
+            document.getElementById("newDocName").value = "";
+            document.getElementById("newDocRole").value = "";
+            document.getElementById("newDocUser").value = "";
+            showNotice("adminNotice", "Врач " + name + " (" + fmtUsername(username) + ") добавлен в штат.", "ok");
+            loadState().then(renderAll);
+          })
+          .catch(function (e) {
+            showNotice("adminNotice", String(e.message || e), "err");
+          });
+        return;
+      }
+
+      state.doctors.push({
+        id: Date.now(),
+        name: name,
+        role: role,
+        username: username,
+        active: true
+      });
+      saveState();
+      document.getElementById("newDocName").value = "";
+      document.getElementById("newDocRole").value = "";
+      document.getElementById("newDocUser").value = "";
+      showNotice("adminNotice", "Врач " + name + " (" + fmtUsername(username) + ") добавлен в штат.", "ok");
+      renderAll();
     }
 
     function toggleDoctor(id) {
       if (!state.isAdmin) return;
-      apiFetch("/api/admin/toggle-doctor", { method: "POST", body: JSON.stringify({ pin: ADMIN_CODE, doctor_id: id }) })
-        .then(function () { loadState().then(renderAll); })
-        .catch(function (e) { showNotice("adminNotice", String(e.message || e), "err"); });
+      if (serverOnline) {
+        apiFetch("/api/admin/toggle-doctor", {
+          method: "POST",
+          body: JSON.stringify({ pin: ADMIN_CODE, doctor_id: id })
+        })
+          .then(function () { loadState().then(renderAll); })
+          .catch(function (e) { showNotice("adminNotice", String(e.message || e), "err"); });
+        return;
+      }
+
+      for (var i = 0; i < state.doctors.length; i++) {
+        if (state.doctors[i].id === id) {
+          state.doctors[i].active = !docActive(state.doctors[i]);
+          break;
+        }
+      }
+      saveState();
+      renderAll();
+    }
+
+    function deleteDoctor(id) {
+      if (!state.isAdmin) return;
+      state.doctors = state.doctors.filter(function (d) { return d.id !== id; });
+      saveState();
+      renderAll();
     }
 
     function reviewApplication(appId, approve) {
       if (!state.isAdmin) return;
-      apiFetch("/api/admin/review-app", { method: "POST", body: JSON.stringify({ pin: ADMIN_CODE, app_id: appId, approve: approve }) })
-        .then(function () { showNotice("adminNotice", approve ? "Анкета одобрена, врач добавлен в штат." : "Анкета отклонена.", "ok"); loadState().then(renderAll); })
-        .catch(function (e) { showNotice("adminNotice", String(e.message || e), "err"); });
+      if (serverOnline) {
+        apiFetch("/api/admin/review-app", {
+          method: "POST",
+          body: JSON.stringify({ pin: ADMIN_CODE, app_id: appId, approve: approve })
+        })
+          .then(function () {
+            showNotice("adminNotice", approve ? "Анкета одобрена, врач добавлен в штат." : "Анкета отклонена.", "ok");
+            loadState().then(renderAll);
+          })
+          .catch(function (e) {
+            showNotice("adminNotice", String(e.message || e), "err");
+          });
+        return;
+      }
+
+      var idx = -1;
+      for (var i = 0; i < state.applications.length; i++) {
+        if (state.applications[i].id === appId) {
+          idx = i;
+          break;
+        }
+      }
+      if (idx === -1) return;
+      var appItem = state.applications[idx];
+      if (approve) {
+        state.doctors.push({
+          id: Date.now(),
+          name: appItem.name,
+          role: appItem.role,
+          username: appItem.username,
+          active: true
+        });
+      }
+      state.applications.splice(idx, 1);
+      saveState();
+      showNotice("adminNotice", approve ? "Анкета одобрена, врач добавлен в штат." : "Анкета отклонена.", "ok");
+      renderAll();
     }
 
-    function clearAlerts() { state.alerts = []; saveState(); renderAlerts(); }
+    function clearAlerts() {
+      state.alerts = [];
+      saveState();
+      renderAlerts();
+    }
 
-    function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+    function esc(s) {
+      return String(s == null ? "" : s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
 
     function renderHeaderAndTabs() {
       var roleBtn = document.getElementById("roleBtn");
@@ -434,13 +1025,17 @@
       var adminTab = document.getElementById("adminTabBtn");
       var tabsBar = document.getElementById("tabsBar");
       if (state.isAdmin) {
-        roleBtn.textContent = "Админ MGH"; roleBtn.classList.add("admin-on");
-        sub.textContent = "MGH • Главврач" + (serverOnline ? "" : " • офлайн");
-        adminTab.style.display = "block"; tabsBar.classList.add("has-admin");
+        roleBtn.textContent = "Админ MGH";
+        roleBtn.classList.add("admin-on");
+        sub.textContent = "MGH • Главврач" + (serverOnline ? " • онлайн" : "");
+        adminTab.style.display = "block";
+        tabsBar.classList.add("has-admin");
       } else {
-        roleBtn.textContent = "Пациент"; roleBtn.classList.remove("admin-on");
-        sub.textContent = "MGH • Режим пациента" + (serverOnline ? "" : " • офлайн");
-        adminTab.style.display = "none"; tabsBar.classList.remove("has-admin");
+        roleBtn.textContent = "Пациент";
+        roleBtn.classList.remove("admin-on");
+        sub.textContent = "MGH • Режим пациента" + (serverOnline ? " • онлайн" : "");
+        adminTab.style.display = "none";
+        tabsBar.classList.remove("has-admin");
       }
     }
 
@@ -448,16 +1043,23 @@
       var activeDocs = state.doctors.filter(docActive);
       var select = document.getElementById("doctorSelect");
       var prevVal = Number(select.value);
-      if (activeDocs.length === 0) { select.innerHTML = '<option value="">Нет активных врачей</option>'; }
-      else {
+      if (activeDocs.length === 0) {
+        select.innerHTML = '<option value="">Нет активных врачей</option>';
+      } else {
         var html = "";
-        for (var i = 0; i < activeDocs.length; i++) html += '<option value="' + activeDocs[i].id + '">' + esc(activeDocs[i].name) + " — " + esc(activeDocs[i].role) + " (" + fmtUsername(activeDocs[i].username) + ")</option>";
+        for (var i = 0; i < activeDocs.length; i++) {
+          html += '<option value="' + activeDocs[i].id + '">' + esc(activeDocs[i].name) + " — " + esc(activeDocs[i].role) + " (" + fmtUsername(activeDocs[i].username) + ")</option>";
+        }
         select.innerHTML = html;
-        for (var k = 0; k < activeDocs.length; k++) if (activeDocs[k].id === prevVal) select.value = String(prevVal);
+        for (var k = 0; k < activeDocs.length; k++) {
+          if (activeDocs[k].id === prevVal) select.value = String(prevVal);
+        }
       }
+
       var listEl = document.getElementById("activeDoctorsList");
-      if (activeDocs.length === 0) { listEl.innerHTML = '<div class="empty">Сейчас активных врачей нет.</div>'; }
-      else {
+      if (activeDocs.length === 0) {
+        listEl.innerHTML = '<div class="empty">Сейчас активных врачей нет.</div>';
+      } else {
         var h = "";
         for (var a = 0; a < activeDocs.length; a++) {
           h += '<div class="doc-item"><div class="doc-top"><div class="doc-name">' + esc(activeDocs[a].name) + '</div><span class="pill active">Принимает</span></div>'
@@ -465,15 +1067,19 @@
         }
         listEl.innerHTML = h;
       }
+
       var adminList = document.getElementById("adminDoctorsList");
-      if (state.doctors.length === 0) { adminList.innerHTML = '<div class="empty">Список врачей пуст.</div>'; }
-      else {
+      if (state.doctors.length === 0) {
+        adminList.innerHTML = '<div class="empty">Список врачей пуст.</div>';
+      } else {
         var hh = "";
         for (var b = 0; b < state.doctors.length; b++) {
           var d = state.doctors[b];
           hh += '<div class="doc-item"><div class="doc-top"><div class="doc-name">' + esc(d.name) + '</div><span class="pill ' + (docActive(d) ? "active" : "off") + '">' + (docActive(d) ? "Активен" : "Отключён") + '</span></div>'
             + '<div class="doc-meta">' + esc(d.role) + " • TG: <b>" + fmtUsername(d.username) + "</b></div>"
-            + '<div class="row-actions"><button class="btn btn-ghost" onclick="toggleDoctor(' + d.id + ')" style="width:auto;">' + (docActive(d) ? "Отключить" : "Включить") + "</button></div></div>";
+            + '<div class="row-actions"><button class="btn btn-ghost" onclick="toggleDoctor(' + d.id + ')" style="width:auto;">' + (docActive(d) ? "Отключить" : "Включить") + "</button>"
+            + (!serverOnline ? '<button class="btn btn-danger" onclick="deleteDoctor(' + d.id + ')" style="width:auto;">Удалить</button>' : "")
+            + "</div></div>";
         }
         adminList.innerHTML = hh;
       }
@@ -481,14 +1087,17 @@
 
     function renderAdminApps() {
       var wrap = document.getElementById("adminAppsList");
-      if (state.applications.length === 0) { wrap.innerHTML = '<div class="empty">Новых анкет пока нет.</div>'; return; }
+      if (state.applications.length === 0) {
+        wrap.innerHTML = '<div class="empty">Новых анкет пока нет.</div>';
+        return;
+      }
       var h = "";
       for (var i = 0; i < state.applications.length; i++) {
         var x = state.applications[i];
         h += '<div class="app-item"><div class="doc-top"><div class="doc-name">' + esc(x.name) + " (" + fmtUsername(x.username) + ')</div><span class="pill info">' + esc(x.role) + "</span></div>"
           + '<div class="doc-meta">Стаж: ' + esc(x.experience) + (x.about ? " • " + esc(x.about) : "") + "</div>"
           + '<div class="row-actions"><button class="btn btn-ok" onclick="reviewApplication(' + x.id + ', true)" style="width:auto;">Принять в штат</button>'
-          + '<button class="btn btn-danger" onclick="reviewApplication(' + x.id + ', false)" style="width:auto;">Отклонить</button></div></div>";
+          + '<button class="btn btn-danger" onclick="reviewApplication(' + x.id + ', false)" style="width:auto;">Отклонить</button></div></div>';
       }
       wrap.innerHTML = h;
     }
@@ -497,21 +1106,26 @@
       var wrap = document.getElementById("alertsList");
       if (serverOnline) {
         var appts = state.appointments || [];
-        if (appts.length === 0) { wrap.innerHTML = '<div class="empty">Записей пока нет. Оформите запись во вкладке «Запись».</div>'; return; }
+        if (appts.length === 0) {
+          wrap.innerHTML = '<div class="empty">Записей пока нет. Оформите запись во вкладке «Запись».</div>';
+          return;
+        }
         var h = "";
         for (var i = 0; i < appts.length; i++) {
           var a = appts[i];
           h += '<div class="log-item"><div class="log-top"><div class="doc-name">' + esc(a.time_slot) + " — " + esc(a.doctor_name) + '</div><span class="pill info">запись</span></div>'
             + '<div class="doc-meta">Пациент: <b>' + esc(a.patient_name) + "</b> (" + fmtUsername(a.patient_username) + ")<br/>"
-            + "Врач: <b>" + fmtUsername(a.doctor_username) + "</b> ("
- + esc(a.doctor_name) + ")<br/>"
+            + "Врач: <b>" + fmtUsername(a.doctor_username) + "</b> (" + esc(a.doctor_name) + ")<br/>"
             + "Причина: " + esc(a.complaints || "Плановый осмотр") + "<br/>"
             + "Создана: " + esc(a.created_at || "") + "</div></div>";
         }
         wrap.innerHTML = h;
         return;
       }
-      if (state.alerts.length === 0) { wrap.innerHTML = '<div class="empty">Записей и напоминаний пока нет (офлайн-режим).</div>'; return; }
+      if (state.alerts.length === 0) {
+        wrap.innerHTML = '<div class="empty">Записей и напоминаний пока нет. Оформите запись во вкладке «Запись».</div>';
+        return;
+      }
       var hh = "";
       for (var j = 0; j < state.alerts.length; j++) {
         var it = state.alerts[j];
@@ -524,12 +1138,19 @@
     }
 
     function renderAll() {
-      renderHeaderAndTabs(); renderDoctors(); renderAdminApps(); renderAlerts(); updateCooldownUI();
+      renderHeaderAndTabs();
+      renderDoctors();
+      renderAdminApps();
+      renderAlerts();
+      updateCooldownUI();
     }
 
-    loadState().then(function () { renderAll(); }).catch(function () { renderAll(); });
+    renderAll();
+    loadState().then(function () { renderAll(); }).catch(function () {});
     setInterval(updateCooldownUI, 500);
-    setInterval(function () { loadState().then(renderAll).catch(function () {}); }, 20000);
+    setInterval(function () {
+      if (serverOnline) loadState().then(renderAll).catch(function () {});
+    }, 20000);
   </script>
 </body>
 </html>
