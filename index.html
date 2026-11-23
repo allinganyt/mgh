@@ -614,23 +614,43 @@
       };
     }
 
+    var GAS_API_URL = "ВСТАВЬТЕ_URL_WEB_APP_GOOGLE_APPS_SCRIPT";
+
     function apiFetch(path, options) {
       var opts = options || {};
-      return fetch((API_BASE || "") + path, {
-        method: opts.method || "GET",
-        headers: { "Content-Type": "application/json" },
-        body: opts.body
-      }).then(function (res) {
-        return res.json().catch(function () { return {}; }).then(function (body) {
-          if (!res.ok) throw new Error(body.detail || ("Ошибка сервера: " + res.status));
-          return body;
-        });
+      var actionMap = {
+        "/api/state": "state",
+        "/api/appointments": "appointment",
+        "/api/applications": "application",
+        "/api/admin/add-doctor": "admin_add",
+        "/api/admin/toggle-doctor": "admin_toggle",
+        "/api/admin/review-app": "admin_review"
+      };
+      var action = actionMap[path];
+      if (!action || !GAS_API_URL || GAS_API_URL.indexOf("ВСТАВЬТЕ") === 0) {
+        return Promise.reject(new Error("Сначала укажите URL Google Apps Script в GAS_API_URL"));
+      }
+      var body = opts.body ? JSON.parse(opts.body) : {};
+      var params = new URLSearchParams();
+      params.set("action", action);
+      if (path === "/api/state") params.set("sender_key", new URLSearchParams(location.search).get("sender_key") || getAccountKey());
+      else params.set("data", JSON.stringify(body));
+      return new Promise(function(resolve, reject) {
+        var callback = "mgh_cb_" + Date.now() + "_" + Math.floor(Math.random()*100000);
+        var script = document.createElement("script");
+        var timer = setTimeout(function(){ cleanup(); reject(new Error("Тайм-аут Google Apps Script")); }, 20000);
+        function cleanup(){ clearTimeout(timer); try{delete window[callback];}catch(e){window[callback]=undefined;} if(script.parentNode)script.parentNode.removeChild(script); }
+        window[callback] = function(result){ cleanup(); if(result && result.ok === false) reject(new Error(result.detail || result.error || "Ошибка сервера")); else resolve(result); };
+        params.set("callback", callback);
+        script.onerror = function(){ cleanup(); reject(new Error("Не удалось связаться с Google Apps Script")); };
+        script.src = GAS_API_URL + "?" + params.toString();
+        document.head.appendChild(script);
       });
     }
 
     function loadState() {
       var key = getAccountKey();
-      return apiFetch("/api/state?sender_key=" + encodeURIComponent(key)).then(function (data) {
+      return apiFetch("/api/state").then(function (data) {
         serverOnline = true;
         state.doctors = (data.doctors || []).map(mapServerDoc);
         state.applications = (data.applications || []).map(function (a) {
