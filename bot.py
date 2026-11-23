@@ -354,10 +354,10 @@ async def reminder_loop():
                     await bot.send_message(
                         chat_id=row["chat_id"],
                         text=(
-                            "⏰ **MGH — время вашего приёма!**\\n\\n"
-                            f"👨‍⚕️ **Врач:** {row['doctor_name']}\\n"
-                            f"🕒 **Время:** {row['time_slot']}\\n"
-                            f"📝 **Причина:** {row['complaints'] or 'Плановый осмотр'}\\n\\n"
+                            "⏰ **MGH — время вашего приёма!**\n\n"
+                            f"👨‍⚕️ **Врач:** {row['doctor_name']}\n"
+                            f"🕒 **Время:** {row['time_slot']}\n"
+                            f"📝 **Причина:** {row['complaints'] or 'Плановый осмотр'}\n\n"
                             "Пожалуйста, не опаздывайте."
                         ),
                         parse_mode="Markdown"
